@@ -1,0 +1,23 @@
+VertexLitGeneric
+{
+	$basetexture			"gh3/hands/spartan/efp_arms_x"
+	$bumpmap				"gh3/hands/spartan/efp_arms_zbump"
+	
+	$halflambert			1
+	
+	$phong					1
+	$phongboost				1
+	$phongexponent 			16
+	$phongfresnelranges		"[ 1 1 1 ]"
+	
+	$rimlight				1
+	$rimlightboost			0.2
+	$rimlightexponent		500
+	
+	$detail					"gh3/assault_rifle/rubber"
+	$detailscale			16
+	$detailblendmode		0
+	$detailblendfactor		2
+	
+	$no_draw 0
+}

@@ -1,0 +1,16 @@
+VertexLitGeneric
+{
+	$basetexture			"gh3/hands/odst/odst_fp_arms_diffuse"
+	$bumpmap				"gh3/hands/odst/odst_fp_arms_zbump"
+	
+	$halflambert			1
+	
+	$phong					1
+	$phongboost				0.04
+	$phongexponent 			32
+	$phongfresnelranges		"[ 1 1 1 ]"
+	
+	$rimlight				1
+	$rimlightboost			0.1
+	$rimlightexponent		8
+}

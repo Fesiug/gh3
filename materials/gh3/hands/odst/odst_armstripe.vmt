@@ -1,0 +1,15 @@
+VertexLitGeneric
+{
+	$basetexture			"gh3/hands/odst/full/sarge_stripe"
+	
+	$halflambert			1
+	
+	$phong					1
+	$phongboost				1
+	$phongexponent 			0
+	$phongfresnelranges		"[ 1 1 1 ]"
+	
+	$rimlight				1
+	$rimlightboost			1
+	$rimlightexponent		1
+}

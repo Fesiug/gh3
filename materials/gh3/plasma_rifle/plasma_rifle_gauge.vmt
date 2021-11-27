@@ -1,0 +1,11 @@
+VertexLitGeneric
+{
+	$basetexture			"gh3/plasma_rifle/thing"
+	
+	$additive				1
+    $selfillum				0
+	
+	$halflambert			1
+	
+	$translucent 1
+}
