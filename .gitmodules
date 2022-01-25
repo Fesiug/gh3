@@ -1,0 +1,3 @@
+[submodule "glua-soundduration"]
+	path = glua-soundduration
+	url = yobson1/glua-soundduration
