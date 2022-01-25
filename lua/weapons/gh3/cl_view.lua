@@ -98,26 +98,34 @@ function SWEP:CalcView( p, pos, ang, fov )
 	return pos, ang, fov
 end
 
+local cuurve = 1
 hook.Add( "CalcView", "GH3_CalcView", function( ply, pos, angles, fov )
 	if !(IsValid(ply) and IsValid(ply:GetActiveWeapon()) and ply:GetActiveWeapon().GH3) then return end
 	local p = ply
 	local w = ply:GetActiveWeapon()
-	p.currentdop = math.Approach(p.currentdop or 0, w:ShouldBeLowered() and 1 or 0, FrameTime()*3)
-	if !w.Stats["Appearance"]["Third Person"] then return end
-	tpt = math.Approach(tpt or 0, (w.Stats["Appearance"]["Third Person"] and !IsValid(w:GetHolster_Entity()) and 0 or 1), FrameTime()*5)
-	local pa = ply:GetAttachment(ply:LookupAttachment("eyes"))
-	pa.Ang.r = 0
-	pa.Ang.p = angles.p
-	pa.Ang.y = angles.y
+	local wh = w:GetHolster_Entity()
 
-	local cuurve = math.pow(math.sin(tpt*math.pi*0.5), 2)
+	p.currentdop = math.Approach(p.currentdop or 0, w:ShouldBeLowered() and 1 or 0, FrameTime() * 3)
+
+	if IsValid(wh) and wh.Stats then
+		if wh.Stats["Appearance"]["Third Person"] then
+			tpt = 1 - w:GetHolsterProgress()
+		else
+			return--tpt = 0--w:GetHolsterProgress()
+		end
+	elseif w.Stats and w.Stats["Appearance"]["Third Person"] then
+		tpt = 0
+	else
+		return
+	end
+
+	cuurve = math.pow( math.sin( tpt * math.pi/2 ), 3 )--tpt--math.pow(math.sin(tpt*math.pi*0.5), 2)
 	local view = {
-		origin = LerpVector((cuurve or 1), pos, pa.Pos + ( pa.Ang:Forward() * -18 ) ),
+		origin = pos,--LerpVector( (cuurve or 1), pos, p:EyePos() ),
 		angles = angles,
 		fov = fov,
 		drawviewer = true
 	}
-	--view.origin.z = pa.Pos.z
 
 	local dingledong = Vector(18, -34, -6) * ( 1 - ( (cuurve or 1) or 1 ) )
 	view.origin = view.origin + dingledong.x * view.angles:Right()
@@ -219,9 +227,10 @@ local LHIK2BonesR = {
 	"ValveBiped.Bip01_R_Finger02"
 }]]
 
-function SWEP:DoLHIK( vm )
+function SWEP:DoLHIK()
 	local lhik_model = self:GetVM(1)
 	local vm = self:GetVM(0)
+
 	local delta = 1
 	for _, bone in pairs(LHIKBonesL) do
 		local vmbone = vm:LookupBone(bone)
@@ -288,24 +297,31 @@ local roony = 0
 local LookY = 0
 local LastY = 0
 
+local MoveCy = 0
+
+local PPtime = 0.25
+
 function SWEP:PreDrawViewModel( vm, wep, p )
 	local ft = FrameTime()
 
-	if vm == self:GetVM(0) then
+	if vm == self:GetVM(0) and !frick then
 		self:DoLHIK()
 	end
 
 	if vm == self:GetVM(1) then
 		do
-			self.wedonot = math.Approach(self.wedonot or 0, self:GetReloadDelay() > CurTime() and 1 or 0, FrameTime()*(1/0.25))
+			self.wedonot = math.Approach(self.wedonot or 0, ( self.Animations[0][2] and self.Animations[0][2][vm:GetSequence()] or (self:GetReloadDelay() - PPtime) > CurTime() ) and 1 or 0, FrameTime()*(1/PPtime))
 		end
 
 		do
 			local wedonot = self.wedonot or 0
 
 			local keyd = p:KeyDown(IN_FORWARD) or p:KeyDown(IN_BACK) or p:KeyDown(IN_MOVELEFT) or p:KeyDown(IN_MOVERIGHT)
-			roony = math.Approach(roony, math.Clamp(p:GetVelocity():Length()/180, 0, 1), ft * 10)
-			vm:SetPoseParameter("overlay_moving", Lerp( wedonot, ( p:OnGround() and keyd ) and 1 or 0, 0 ) )--roony, 0))
+			roony = math.Approach(roony, p:OnGround() and math.Clamp(p:GetVelocity():Length()/200, 0, 1) or 0, ft * 10)
+			vm:SetPoseParameter("overlay_moving", roony * (1-wedonot) )--Lerp( wedonot, ( p:OnGround() and keyd ) and 1 or 0, 0 ) )--roony, 0))
+
+			MoveCy = ( MoveCy + ( FrameTime() * ( 30 / self.Animations[0][1][1] ) * p:GetVelocity():Length()/200 ) ) % 1
+			vm:SetPoseParameter("overlay_movingcy", MoveCy )
 
 			local claim = 0
 			if p:KeyDown(IN_FORWARD) then claim = 1
@@ -332,6 +348,7 @@ function SWEP:PreDrawViewModel( vm, wep, p )
 			vm:SetPoseParameter("overlay_pat1", Lerp(wedonot, LookY, 0))
 		end
 	end
+
 end
 
 function SWEP:PostDrawViewModel( vm, wep, p )

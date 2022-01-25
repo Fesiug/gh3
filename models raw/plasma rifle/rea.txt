@@ -1,0 +1,122 @@
+
+
+
+$animation "h_norm" "anims/o_overlays.smd" { frame 0 0 }
+$animation "h_norm2" "anims/o_moving.smd" { frame 0 0 }
+$animation "h_norm3" "anims/o_pitchandturn.smd" { frame 0 0 }
+
+$sequence "o_moving" {
+	"h_norm"
+	"anims/o_moving.smd"
+ 	blend overlay_moving 0 1
+	
+	subtract "h_norm" 0
+	
+	autoplay
+	delta
+	realtime
+	fps 30
+	hidden
+	fadein 0.5
+	fadeout 0.5
+	posecycle "overlay_moving"
+}
+
+$animation "m_forward" "anims/o_overlays.smd" { frame 1 1 }
+$animation "m_def" "anims/o_overlays.smd" { frame 2 2 }
+$animation "m_back" "anims/o_overlays.smd" { frame 3 3 }
+$sequence "overlay_move_x" {
+	"m_forward"
+	"m_def"
+	"m_back"
+	
+	subtract "h_norm" 0
+	
+ 	blend overlay_move_x -1 1
+
+	autoplay
+	delta
+	fps 30
+	hidden
+}
+
+$animation "m_left" "anims/o_overlays.smd" { frame 4 4 }
+$animation "m_def2" "anims/o_overlays.smd" { frame 5 5 }
+$animation "m_right" "anims/o_overlays.smd" { frame 6 6 }
+$sequence "overlay_move_y" {
+	"m_left"
+	"m_def2"
+	"m_right"
+	
+	subtract "h_norm" 0
+	
+ 	blend overlay_move_y -1 1
+
+	autoplay
+	delta
+	fps 30
+	hidden
+}
+
+$animation "l_forward" "anims/o_pitchandturn.smd" { frame 1 1 }
+$animation "l_def" "anims/o_pitchandturn.smd" { frame 2 2 }
+$animation "l_back" "anims/o_pitchandturn.smd" { frame 3 3 }
+$sequence "overlay_look_p" {
+	"l_forward"
+	"l_def"
+	"l_back"
+	
+	subtract "h_norm" 0
+	
+ 	blend overlay_look_p -1 1
+
+	autoplay
+	delta
+	fps 30
+	hidden
+}
+
+$animation "l_left" "anims/o_pitchandturn.smd" { frame 4 4 }
+$animation "l_def2" "anims/o_pitchandturn.smd" { frame 5 5 }
+$animation "l_right" "anims/o_pitchandturn.smd" { frame 6 6 }
+$sequence "overlay_look_y" {
+	"l_left"
+	"l_def2"
+	"l_right"
+	
+	subtract "h_norm" 0
+	
+ 	blend overlay_look_y -1 1
+
+	autoplay
+	delta
+	fps 30
+	hidden
+}
+
+$animation "h_0"   "anims/o_pitchandturn.smd" { frame 0 0 }
+$animation "h_1-1" "anims/o_pitchandturn.smd" { frame 1 1 }
+$animation "h_1-2" "anims/o_pitchandturn.smd" { frame 2 2 }
+$animation "h_1-3" "anims/o_pitchandturn.smd" { frame 3 3 }
+$animation "h_2-1" "anims/o_pitchandturn.smd" { frame 4 4 }
+$animation "h_2-2" "anims/o_pitchandturn.smd" { frame 5 5 }
+$animation "h_2-3" "anims/o_pitchandturn.smd" { frame 6 6 }
+$animation "h_3-1" "anims/o_pitchandturn.smd" { frame 7 7 }
+$animation "h_3-2" "anims/o_pitchandturn.smd" { frame 8 8 }
+$animation "h_3-3" "anims/o_pitchandturn.smd" { frame 9 9 }
+$sequence "overlay_pat" {
+	"h_1-1"	"h_1-2"	"h_1-3"
+	"h_2-1"	"h_2-2"	"h_2-3"
+	"h_3-1"	"h_3-2"	"h_3-3"
+	
+	subtract "h_norm3" 0
+
+	blendwidth 3
+ 	blend overlay_pat1 -1 1
+ 	blend overlay_pat2 -1 1
+
+	autoplay
+	delta
+	fps 30
+	hidden
+}

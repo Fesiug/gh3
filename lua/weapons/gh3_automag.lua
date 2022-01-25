@@ -5,7 +5,7 @@ SWEP.Category			= "Halo 3"
 SWEP.Spawnable			= true
 
 -- Stuff
-SWEP.PrintName			= "automag"
+SWEP.PrintName			= "Automag"
 SWEP.Name_The			= "the automag"
 SWEP.Name_A				= "an automag"
 SWEP.Slot				= 1
@@ -17,6 +17,9 @@ SWEP.WorldModel			= Model( "models/weapons/w_pist_usp_silencer.mdl" )
 SWEP.ViewModelFOV = 54+10
 
 SWEP.Animations = {
+	[0] = { -- Essentials
+		{ 20 }, -- Sprinting anim length in frames
+	},
 	["idle"]			= { seq = "idle" },
 	["posing"]			= { seq = "posing1", snd_p = "GH3.Magnum.Posing1" },
 	["fire"]			= {
@@ -72,8 +75,8 @@ SWEP.Stats = {
 		["Holdtype"] = "pistol",
 	},
 	["Zoom"] = {
-		["Magnification Levels"] = 1,
-		["Magnification Range"] = { min = 3, max = 3 },
+		["Magnification Levels"] = 2,
+		["Magnification Range"] = { min = 3, max = 9 },
 		["Zoom Time"] = 0.2,
 	},
 	["Melee"] = {

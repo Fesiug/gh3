@@ -5,7 +5,7 @@ SWEP.Category			= "Halo 3"
 SWEP.Spawnable			= true
 
 -- Stuff
-SWEP.PrintName			= "rocket launcher"
+SWEP.PrintName			= "Rocket Launcher"
 SWEP.Name_The			= "the rocket launcher"
 SWEP.Name_A				= "a rocket launcher"
 SWEP.Slot				= 1
@@ -18,6 +18,9 @@ SWEP.WorldModel			= Model( "models/weapons/w_rocket_launcher.mdl" )
 local tpa = { ACT_HL2MP_GESTURE_RELOAD_REVOLVER, ACT_HL2MP_GESTURE_RANGE_ATTACK_CROSSBOW }
 
 SWEP.Animations = {
+	[0] = { -- Essentials
+		{ 21 }, -- Sprinting anim length in frames
+	},
 	["idle"]			= { seq = "idle" },
 	["posing"]			= {
 		{ seq = "posing1", snd_p = "GH3.RocketLauncher.Posing1" },

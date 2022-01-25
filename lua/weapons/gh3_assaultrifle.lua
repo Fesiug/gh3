@@ -5,7 +5,7 @@ SWEP.Category			= "Halo 3"
 SWEP.Spawnable			= true
 
 -- Stuff
-SWEP.PrintName			= "assault rifle"
+SWEP.PrintName			= "Assault Rifle"
 SWEP.Name_The			= "the assault rifle"
 SWEP.Name_A				= "an assault rifle"
 SWEP.Slot				= 1
@@ -18,6 +18,9 @@ SWEP.WorldModel			= Model( "models/weapons/w_rif_aug.mdl" )
 local tpa = { ACT_HL2MP_GESTURE_RELOAD_AR2, ACT_HL2MP_GESTURE_RANGE_ATTACK_AR2 }
 
 SWEP.Animations = {
+	[0] = { -- Essentials
+		{ 20 }, -- Sprinting anim length in frames
+	},
 	["idle"]			= { seq = "idle" },
 	["posing"]			= {
 		{ seq = "posing1", snd_p = "GH3.AR.Posing1" },

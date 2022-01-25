@@ -5,7 +5,7 @@ SWEP.Category			= "Halo 3"
 SWEP.Spawnable			= true
 
 -- Stuff
-SWEP.PrintName			= "magnum (CE)"
+SWEP.PrintName			= "Magnum (CE)"
 SWEP.Name_The			= "the magnum"
 SWEP.Name_A				= "a magnum"
 SWEP.Slot				= 1
@@ -16,6 +16,9 @@ SWEP.ViewModel			= Model( "models/gh3/fp/magnum.mdl" )
 SWEP.WorldModel			= Model( "models/weapons/w_pistol.mdl" )
 
 SWEP.Animations = {
+	[0] = { -- Essentials
+		{ 20 }, -- Sprinting anim length in frames
+	},
 	["idle"]			= { seq = "idle" },
 	["posing"]			= {
 		{ seq = "posing1", snd_p = "GH3.Magnum.Posing1" },

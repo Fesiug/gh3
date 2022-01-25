@@ -5,7 +5,7 @@ SWEP.Category			= "Halo 3"
 SWEP.Spawnable			= true
 
 -- Stuff
-SWEP.PrintName			= "smg"
+SWEP.PrintName			= "SMG"
 SWEP.Name_The			= "the smg"
 SWEP.Name_A				= "an smg"
 SWEP.Slot				= 1
@@ -18,6 +18,9 @@ SWEP.WorldModel			= Model( "models/weapons/w_smg_tmp.mdl" )
 local tpa = { ACT_HL2MP_GESTURE_RELOAD_PISTOL, ACT_HL2MP_GESTURE_RANGE_ATTACK_SMG1 }
 
 SWEP.Animations = {
+	[0] = { -- Essentials
+		{ 20 }, -- Sprinting anim length in frames
+	},
 	["idle"]			= { seq = "idle" },
 	["posing"]			= {
 		{ seq = "posing1", snd_p = "GH3.SMG.Posing1" },

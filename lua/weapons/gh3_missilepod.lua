@@ -5,7 +5,7 @@ SWEP.Category			= "Halo 3"
 SWEP.Spawnable			= true
 
 -- Stuff
-SWEP.PrintName			= "missile pod"
+SWEP.PrintName			= "Missile Pod"
 SWEP.Name_The			= "the missile pod"
 SWEP.Name_A				= "a missile pod"
 SWEP.Slot				= 1
@@ -18,6 +18,9 @@ SWEP.WorldModel			= Model( "models/weapons/w_physics.mdl" )
 local tpa = { ACT_HL2MP_GESTURE_RELOAD_REVOLVER, ACT_HL2MP_GESTURE_RANGE_ATTACK_REVOLVER }
 
 SWEP.Animations = {
+	[0] = { -- Essentials
+		{ 20 }, -- Sprinting anim length in frames
+	},
 	["idle"]			= { seq = "idle" },
 	["fire"]			= { seq = "fire1", tpanim = tpa[2] },
 	["putaway"]			= { seq = "put_away" },

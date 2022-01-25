@@ -5,7 +5,7 @@ SWEP.Category			= "Halo 3"
 SWEP.Spawnable			= true
 
 -- Stuff
-SWEP.PrintName			= "plasma rifle"
+SWEP.PrintName			= "Plasma Rifle"
 SWEP.Name_The			= "the plasma rifle"
 SWEP.Name_A				= "a plasma rifle"
 SWEP.Slot				= 1
@@ -18,6 +18,9 @@ SWEP.WorldModel			= Model( "models/weapons/w_rif_aug.mdl" )
 local tpa = { ACT_HL2MP_GESTURE_RELOAD_AR2, ACT_HL2MP_GESTURE_RANGE_ATTACK_AR2 }
 
 SWEP.Animations = {
+	[0] = { -- Essentials
+		{ 21 }, -- Sprinting anim length in frames
+	},
 	["idle"]			= { seq = "idle" },
 	["posing"]			= {
 		{ seq = "posing1", snd_p = "GH3.PR.Posing1" },
@@ -34,6 +37,7 @@ SWEP.Animations = {
 	["oh_exit"]			= { seq = "oh_exit", snd_p = "GH3.PR.OH_Exit" },
 	["putaway"]			= { seq = "put_away" },
 	["ready"]			= { seq = "ready", snd_p = "GH3.PR.Ready" },
+	["ready_oh"]			= { seq = "ready_oh", snd_p = "GH3.PR.Ready" },
 	["throw_equipment"]	= { seq = "throw_equipment", delay_te = (12/30) },
 	["throw_grenade"]	= { seq = "throw_grenade", delay_tg = (12/30) },
 }
@@ -93,9 +97,9 @@ SWEP.Stats = {
 if CLIENT then
 	SWEP.ReticleData = {
 		{
-			mat = Material("gh3/ui/reticles/ar.png", "smooth"),
-			w = ScreenScale(28),
-			h = ScreenScale(28)
+			mat = Material("gh3/ui/reticles/plasma_rifle.png", "smooth"),
+			w = ScreenScale(58),
+			h = ScreenScale(58)
 		}
 	}
 	

@@ -5,7 +5,7 @@ SWEP.Category			= "Halo 3"
 SWEP.Spawnable			= true
 
 -- Stuff
-SWEP.PrintName			= "the oddball"
+SWEP.PrintName			= "The Oddball"
 SWEP.Name_The			= "the oddball"
 SWEP.Name_A				= "the oddball"
 SWEP.Slot				= 1
@@ -16,6 +16,9 @@ SWEP.ViewModel			= Model( "models/gh3/fp/multiplayer ball.mdl" )
 SWEP.WorldModel			= Model( "models/weapons/w_shotgun.mdl" )
 
 SWEP.Animations = {
+	[0] = { -- Essentials
+		{ 21 }, -- Sprinting anim length in frames
+	},
 	["idle"]			= { seq = "idle" },
 	["posing"]			= {
 		{ seq = "posing1", snd_p = "GH3.MP_Ball.Posing1" },

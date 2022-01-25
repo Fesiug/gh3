@@ -162,7 +162,11 @@ function SWEP:PrimaryAttack(commanded)
 	end
 
 	self:SendAnim( self:SelAnims().fire, 1 )
-	self.bopset = VectorRand() * (self.Stats["Firing"]["Recoil mult"] or 2)
+	if game.SinglePlayer() then
+		self:CallOnClient("BopsetSPFix")
+	else
+		self:BopsetSPFix()
+	end
 
 	if self:GetOwner() and self:GetOwner():IsPlayer() then
 		local p = self:GetOwner()
@@ -184,6 +188,10 @@ function SWEP:PrimaryAttack(commanded)
 	--bapset = AngleRand()/180 * 0.33
 
 
+end
+
+function SWEP:BopsetSPFix()
+	self.bopset = VectorRand() * (self.Stats["Firing"]["Recoil mult"] or 2)
 end
 
 function SWEP:Melee()

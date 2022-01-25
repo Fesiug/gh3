@@ -5,7 +5,7 @@ SWEP.Category			= "Halo 3"
 SWEP.Spawnable			= true
 
 -- Stuff
-SWEP.PrintName			= "shotgun"
+SWEP.PrintName			= "Shotgun"
 SWEP.Name_The			= "the shotgun"
 SWEP.Name_A				= "a shotgun"
 SWEP.Slot				= 1
@@ -16,6 +16,16 @@ SWEP.ViewModel			= Model( "models/gh3/fp/shotgun.mdl" )
 SWEP.WorldModel			= Model( "models/weapons/w_shotgun.mdl" )
 
 SWEP.Animations = {
+	[0] = { -- Essentials
+		{ 20 }, -- Sprinting anim length in frames
+		{
+			[1] = true,
+			[2] = true,
+			[3] = true,
+			[10] = true,
+			[12] = true,
+		}, -- Sequences with no funny business
+	},
 	["idle"]			= { seq = "idle" },
 	["posing"]			= {
 		{ seq = "posing1", snd_p = "GH3.Shotgun.Posing1" },

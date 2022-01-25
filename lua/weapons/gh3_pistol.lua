@@ -5,7 +5,7 @@ SWEP.Category			= "Halo 3"
 SWEP.Spawnable			= true
 
 -- Stuff
-SWEP.PrintName			= "pistol"
+SWEP.PrintName			= "Pistol"
 SWEP.Name_The			= "the pistol"
 SWEP.Name_A				= "a pistol"
 SWEP.Slot				= 1
@@ -17,6 +17,9 @@ SWEP.WorldModel			= Model( "models/weapons/w_pist_usp.mdl" )
 SWEP.ViewModelFOV = 54+10
 
 SWEP.Animations = {
+	[0] = { -- Essentials
+		{ 20 }, -- Sprinting anim length in frames
+	},
 	["idle"]			= { seq = "idle" },
 	["posing"]			= { seq = "posing1", snd_p = "GH3.Magnum.Posing1" },
 	["fire"]			= {

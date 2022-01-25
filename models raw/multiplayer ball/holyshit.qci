@@ -1,0 +1,158 @@
+
+$poseparameter overlay_moving 0 1
+$poseparameter overlay_movingcy 0 1
+$poseparameter overlay_move_x -1 1
+$poseparameter overlay_move_y -1 1
+
+$poseparameter overlay_look_p -1 1
+$poseparameter overlay_look_y -1 1
+
+$poseparameter overlay_pat1 -1 1
+$poseparameter overlay_pat2 -1 1
+
+
+$animation "h_norm" "anims/o_overlays.smd" {
+	frames 0 0
+	fps 30
+}
+
+$animation "h_notmoving" "anims/o_overlays.smd" {
+	frames 0 0
+	fps 30
+	subtract "h_norm" 0
+}
+$animation "h_moving" "anims/o_moving.smd" {
+	fps 30
+	subtract "h_norm" 0
+}
+
+$animation "o_mv0" "anims/o_moving.smd" { frames 0 0 subtract "h_norm" 0 }
+$animation "o_mv1" "anims/o_moving.smd" { frames 1 1 subtract "h_norm" 0 }
+$animation "o_mv2" "anims/o_moving.smd" { frames 2 2 subtract "h_norm" 0 }
+$animation "o_mv3" "anims/o_moving.smd" { frames 3 3 subtract "h_norm" 0 }
+$animation "o_mv4" "anims/o_moving.smd" { frames 4 4 subtract "h_norm" 0 }
+$animation "o_mv5" "anims/o_moving.smd" { frames 5 5 subtract "h_norm" 0 }
+$animation "o_mv6" "anims/o_moving.smd" { frames 6 6 subtract "h_norm" 0 }
+$animation "o_mv7" "anims/o_moving.smd" { frames 7 7 subtract "h_norm" 0 }
+$animation "o_mv8" "anims/o_moving.smd" { frames 8 8 subtract "h_norm" 0 }
+$animation "o_mv9" "anims/o_moving.smd" { frames 9 9 subtract "h_norm" 0 }
+$animation "o_mv10" "anims/o_moving.smd" { frames 10 10 subtract "h_norm" 0 }
+$animation "o_mv11" "anims/o_moving.smd" { frames 11 11 subtract "h_norm" 0 }
+$animation "o_mv12" "anims/o_moving.smd" { frames 12 12 subtract "h_norm" 0 }
+$animation "o_mv13" "anims/o_moving.smd" { frames 13 13 subtract "h_norm" 0 }
+$animation "o_mv14" "anims/o_moving.smd" { frames 14 14 subtract "h_norm" 0 }
+$animation "o_mv15" "anims/o_moving.smd" { frames 15 15 subtract "h_norm" 0 }
+$animation "o_mv16" "anims/o_moving.smd" { frames 16 16 subtract "h_norm" 0 }
+$animation "o_mv17" "anims/o_moving.smd" { frames 17 17 subtract "h_norm" 0 }
+$animation "o_mv18" "anims/o_moving.smd" { frames 18 18 subtract "h_norm" 0 }
+$animation "o_mv19" "anims/o_moving.smd" { frames 19 19 subtract "h_norm" 0 }
+$animation "o_mv20" "anims/o_moving.smd" { frames 20 20 subtract "h_norm" 0 }
+$animation "o_mv21" "anims/o_moving.smd" { frames 21 21 subtract "h_norm" 0 }
+
+$sequence "o_moving" {
+	"h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving" "h_notmoving"
+	"o_mv0" "o_mv1" "o_mv2" "o_mv3" "o_mv4" "o_mv5" "o_mv6" "o_mv7" "o_mv8" "o_mv9" "o_mv10" "o_mv11" "o_mv12" "o_mv13" "o_mv14" "o_mv15" "o_mv16" "o_mv17" "o_mv18" "o_mv19" "o_mv20" "o_mv21"
+	
+ 	blend overlay_movingcy 0 1
+ 	blend overlay_moving 0 1
+ 	blendwidth 22
+	
+	autoplay
+	delta
+	fps 30
+	hidden
+	loop
+}
+
+
+$animation "o_m1" "anims/o_overlays.smd" { frames 1 1 subtract "h_norm" 0 }
+$animation "o_m2" "anims/o_overlays.smd" { frames 0 0 subtract "h_norm" 0 }
+$animation "o_m3" "anims/o_overlays.smd" { frames 2 2 subtract "h_norm" 0 }
+$sequence "overlay_move_x" {
+	"o_m1"
+	"o_m2"
+	"o_m3"
+	
+ 	blend overlay_move_x -1 1
+
+	autoplay
+	delta
+	fps 30
+	hidden
+}
+
+
+$animation "o_m4" "anims/o_overlays.smd" { frames 3 3 subtract "h_norm" 0 }
+$animation "o_m5" "anims/o_overlays.smd" { frames 0 0 subtract "h_norm" 0 }
+$animation "o_m6" "anims/o_overlays.smd" { frames 4 4 subtract "h_norm" 0 }
+$sequence "overlay_move_y" {
+	"o_m4"
+	"o_m5"
+	"o_m6"
+	
+ 	blend overlay_move_y -1 1
+
+	autoplay
+	delta
+	fps 30
+	hidden
+}
+
+
+$animation "o_l1" "anims/o_overlays.smd" { frames 8 8 subtract "h_norm" 0 }
+$animation "o_l2" "anims/o_overlays.smd" { frames 5 5 subtract "h_norm" 0 }
+$animation "o_l3" "anims/o_overlays.smd" { frames 9 9 subtract "h_norm" 0 }
+$sequence "overlay_look_p" {
+	"o_l1"
+	"o_l2"
+	"o_l3"
+	
+ 	blend overlay_look_p -1 1
+
+	autoplay
+	delta
+	fps 30
+	hidden
+}
+
+
+$animation "o_l4" "anims/o_overlays.smd" { frames 6 6 subtract "h_norm" 0 }
+$animation "o_l5" "anims/o_overlays.smd" { frames 5 5 subtract "h_norm" 0 }
+$animation "o_l6" "anims/o_overlays.smd" { frames 7 7 subtract "h_norm" 0 }
+$sequence "overlay_look_y" {
+	"o_l4"
+	"o_l5"
+	"o_l6"
+	
+ 	blend overlay_look_y -1 1
+
+	autoplay
+	delta
+	fps 30
+	hidden
+}
+
+
+$animation "o_p1" "anims/o_pitchandturn.smd" { frames 1 1 subtract "h_norm" 0 }
+$animation "o_p2" "anims/o_pitchandturn.smd" { frames 2 2 subtract "h_norm" 0 }
+$animation "o_p3" "anims/o_pitchandturn.smd" { frames 3 3 subtract "h_norm" 0 }
+$animation "o_p4" "anims/o_pitchandturn.smd" { frames 4 4 subtract "h_norm" 0 }
+$animation "o_p5" "anims/o_pitchandturn.smd" { frames 5 5 subtract "h_norm" 0 }
+$animation "o_p6" "anims/o_pitchandturn.smd" { frames 6 6 subtract "h_norm" 0 }
+$animation "o_p7" "anims/o_pitchandturn.smd" { frames 7 7 subtract "h_norm" 0 }
+$animation "o_p8" "anims/o_pitchandturn.smd" { frames 8 8 subtract "h_norm" 0 }
+$animation "o_p9" "anims/o_pitchandturn.smd" { frames 9 9 subtract "h_norm" 0 }
+$sequence "overlay_pat" {
+	"o_p1" "o_p2" "o_p3"
+	"o_p4" "o_p5" "o_p6"
+	"o_p7" "o_p8" "o_p9"
+
+	blendwidth 3
+ 	blend overlay_pat1 -1 1
+ 	blend overlay_pat2 -1 1
+
+	autoplay
+	delta
+	fps 30
+	hidden
+}
