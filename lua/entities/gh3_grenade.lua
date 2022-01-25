@@ -73,15 +73,15 @@ function ENT:Detonate()
 		self:EmitSound("GH3.Gren.Frag.Explode")
 	end
 
-	GH3.Explosion(self:GetPos(), self:GetOwner(), self, 1.75/units.halo,
+	GH3.Explosion(self:GetPos(), self:GetOwner(), self, 1.75/GH3.U_Halo,
 	{
 		dmin = 60,
 		dmax = 160,
-		rmin = 0.5/units.halo,
-		rmax = 1.75/units.halo,
-		velocity = 2.25/units.halo,
-		dmgvelocity = 100*2.25/units.halo,
-		physvelocity = 10*2.25/units.halo
+		rmin = 0.5/GH3.U_Halo,
+		rmax = 1.75/GH3.U_Halo,
+		velocity = 2.25/GH3.U_Halo,
+		dmgvelocity = 100*2.25/GH3.U_Halo,
+		physvelocity = 10*2.25/GH3.U_Halo
 	} )
 
 	timer.Simple(0, function() if IsValid(self) then self:Remove() end end)

@@ -91,7 +91,7 @@ SWEP.Stats = {
 	},
 	["Melee"] = {
 		["Damage"] = 70,
-		["Range"] = 0.6/units.halo,
+		["Range"] = 0.6/GH3.U_Halo,
 	}
 }
 if CLIENT then

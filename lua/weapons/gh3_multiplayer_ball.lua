@@ -72,7 +72,7 @@ SWEP.Stats = {
 		["Projectiles Per Shot"] = 15,
 		["Damage"] = FRange( 3, 10 ),
 		["Force"] = 2,
-		["Air Damage Range"] = { min = 2 / units.meters, max = 4 / units.meters }, -- the fuck are the units
+		["Air Damage Range"] = { min = 2 / GH3.U_Meters, max = 4 / GH3.U_Meters }, -- the fuck are the units
 		["Spread"] = 7.5,
 		["Can Headshot"] = true,
 	},
@@ -88,7 +88,7 @@ SWEP.Stats = {
 	},
 	["Melee"] = {
 		["Damage"] = 150,
-		["Range"] = 0.6/units.halo,
+		["Range"] = 0.6/GH3.U_Halo,
 	}
 }
 if CLIENT then

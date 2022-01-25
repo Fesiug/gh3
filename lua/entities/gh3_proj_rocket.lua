@@ -70,15 +70,15 @@ function ENT:Detonate()
 	self:EmitSound("GH3.Rocket.Explode")
 	self:EmitSound("GH3.Rocket.ExplodeFar")
 
-	GH3.Explosion(self:GetPos(), self:GetOwner(), self.Weaap, 2/units.halo,
+	GH3.Explosion(self:GetPos(), self:GetOwner(), self.Weaap, 2/GH3.U_Halo,
 	{
 		dmin = 80,
 		dmax = 240,
-		rmin = 0.9/units.halo,
-		rmax = 2/units.halo,
-		velocity = 3/units.halo,
-		dmgvelocity = 100*3/units.halo,
-		physvelocity = 10*3/units.halo,
+		rmin = 0.9/GH3.U_Halo,
+		rmax = 2/GH3.U_Halo,
+		velocity = 3/GH3.U_Halo,
+		dmgvelocity = 100*3/GH3.U_Halo,
+		physvelocity = 10*3/GH3.U_Halo,
 		transferdamageusesminimum = true
 	} )
 

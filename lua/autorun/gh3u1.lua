@@ -1,5 +1,8 @@
 
 GH3 = {}
+GH3.U_Max = 1
+GH3.U_Halo = 0.01
+GH3.U_Meters = 0.03048
 
 function GH3.Explosion(origin, attacker, inflictor, radius, info)
 

@@ -37,14 +37,9 @@ for i, X in ipairs(ISH) do
 	include(X)
 end
 
-units = {}
-units.max = 1
-units.halo = 0.01
-units.meters = 0.03048
-
 -- Here it goes
 
-SWEP.Base				= "weapon_base" -- can't fucking disable this without ugly warnings
+SWEP.Base				= "weapon_base"
 SWEP.Category			= "Halo 3"
 SWEP.Spawnable			= false
 
@@ -124,7 +119,7 @@ SWEP.Stats = {
 	},]]
 	["Melee"] = {
 		["Damage"] = 70,
-		["Range"] = 0.6/units.halo,
+		["Range"] = 0.6/GH3.U_Halo,
 	}
 }
 SWEP.Sound = {
@@ -317,10 +312,7 @@ function SWEP:GetVM(ind)
 end
 
 
-local l_s_1 = false
-local l_s_2 = false
 local l_s_3 = true
-local l_s_3a = false
 local l_s_4 = 0
 function SWEP:Think()
 		local p = self:GetOwner()
