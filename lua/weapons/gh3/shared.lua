@@ -1,4 +1,6 @@
 
+AddCSLuaFile()
+
 local ICL = {
 	"cl_hud.lua",
 	"cl_view.lua",
@@ -11,6 +13,7 @@ local ISV = {
 local ISH = {
 	"sh_hold.lua",
 	"sh_firing.lua",
+	"frange.lua"
 }
 
 -- Client
@@ -90,18 +93,18 @@ SWEP.Stats = {
 		["Rounds Reloaded"] = 0,
 	},
 	["Firing"] = {
-		["Rounds Per Second"] = { min = 10, max = 10 },
+		["Rounds Per Second"] = FRange( 10, 10 ),
 		["Acceleration Time"] = 1*1000,
 		["Deceleration Time"] = 1*1000,
-		["Shots Per Fire"] = { min = 1, max = 1 },
+		["Shots Per Fire"] = FRange( 1, 1 ),
 		["Fire Recovery Time"] = 0,
 		["Rounds Per Shot"] = 1,
 	},
 	["Projectiles"] = {
 		["Projectiles Per Shot"] = 1,
-		["Damage"] = { min = 1, max = 1 },
+		["Damage"] = FRange( 1, 1 ),
 		["Force"] = 1,
-		["Air Damage Range"] = { min = 0, max = 0 },
+		["Air Damage Range"] = FRange( 0, 0 ),
 		["Spread"] = 0,
 		["Can Headshot"] = false,
 	},
@@ -109,14 +112,14 @@ SWEP.Stats = {
 		["Acceleration Time"] = 1,
 		["Deceleration Time"] = 1,
 		["Minimum Error"] = 0,
-		["Error Angle"] = { min = 0, max = 0 },
+		["Error Angle"] = FRange( 0, 0 ),
 	},
 	["Appearance"] = {
 		["Holdtype"] = "pistol",
 	},
 	--[[["Zoom"] = {
 		["Magnification Levels"] = 1,
-		["Magnification Range"] = { min = 3, max = 3 },
+		["Magnification Range"] = FRange( 3, 3 ),
 		["Zoom Time"] = 0.2,
 	},]]
 	["Melee"] = {
@@ -166,6 +169,8 @@ function SWEP:SetupDataTables()
 end
 
 local c_ammo = CreateConVar("gh3_cheat_ammo", 0, 0, "0 for default, 1 for spare, 2 for bottomless")
+
+
 
 function SWEP:SetAmmo(v)
 	if c_ammo:GetInt() == 1 then return end

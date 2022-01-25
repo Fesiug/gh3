@@ -70,15 +70,15 @@ SWEP.Stats = {
 		["Rounds Reloaded"] = 60,
 	},
 	["Firing"] = {
-		["Rounds Per Second"] = { min = 15, max = 15 },
-		["Shots Per Fire"] = { min = 0, max = 0 },
+		["Rounds Per Second"] = FRange( 15, 15 ),
+		["Shots Per Fire"] = FRange( 0, 0 ),
 		["Fire Recovery Time"] = 0,
 		["Rounds Per Shot"] = 1,
 	},
 	["Projectiles"] = {
 		["Projectiles Per Shot"] = 1,
-		["Damage"] = { min = 5, max = 5 },
-		["Air Damage Range"] = { min = 0, max = 0 },
+		["Damage"] = FRange( 5, 5 ),
+		["Air Damage Range"] = FRange( 0, 0 ),
 		["Spread"] = 0,
 		["Can Headshot"] = false,
 	},
@@ -86,10 +86,10 @@ SWEP.Stats = {
 		["Acceleration Time"] = 3*(1/3),
 		["Deceleration Time"] = 0.25*4,
 		["Minimum Error"] = 0.25,
-		["Error Angle"] = { min = 1.25, max = 2.75 },
+		["Error Angle"] = FRange( 1.25, 2.75 ),
 	},
 	["Recoil"] = {
-		["Change Per Shot"] = { min = 0, max = 0.4 },
+		["Change Per Shot"] = FRange( 0, 0.4 ),
 		["Acceleration Time"] = 1.1*0.9090909,
 		["Deceleration Time"] = 0.3*3.333333,
 		["Function"] = "Very Late", -- Linear, Early, Very Early, Late, Very Late, Cosine, Zero, One

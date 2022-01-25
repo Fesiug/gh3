@@ -55,15 +55,15 @@ SWEP.Stats = {
 		["Rounds Reloaded"] = 32,
 	},
 	["Firing"] = {
-		["Rounds Per Second"] = { min = 10, max = 10 },
-		["Shots Per Fire"] = { min = 0, max = 0 },
+		["Rounds Per Second"] = FRange( 10, 10 ),
+		["Shots Per Fire"] = FRange( 0, 0 ),
 		["Fire Recovery Time"] = 0,
 		["Rounds Per Shot"] = 1,
 	},
 	["Projectiles"] = {
 		["Projectiles Per Shot"] = 1,
-		["Damage"] = { min = 7.5, max = 7.5 },
-		["Air Damage Range"] = { min = 0, max = 0 },
+		["Damage"] = FRange( 7.5, 7.5 ),
+		["Air Damage Range"] = FRange( 0, 0 ),
 		["Spread"] = 0,
 		--[[
 			["Class"] = "gh3_proj_ar",
@@ -76,7 +76,7 @@ SWEP.Stats = {
 		["Acceleration Time"] = 0.5*2,
 		["Deceleration Time"] = 0.5*2,
 		["Minimum Error"] = 0.1,
-		["Error Angle"] = { min = 0.1, max = 3 },
+		["Error Angle"] = FRange( 0.1, 3 ),
 	},
 	["Appearance"] = {
 		["Holdtype"] = "rpg",

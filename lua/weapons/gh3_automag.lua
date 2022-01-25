@@ -52,16 +52,16 @@ SWEP.Stats = {
 		["Rounds Reloaded"] = 12,
 	},
 	["Firing"] = {
-		["Rounds Per Second"] = { min = 30, max = 30 },
-		["Shots Per Fire"] = { min = 1, max = 1 },
+		["Rounds Per Second"] = FRange( 30, 30 ),
+		["Shots Per Fire"] = FRange( 1, 1 ),
 		["Fire Recovery Time"] = 0.075,
 		["Rounds Per Shot"] = 1,
 	},
 	["Projectiles"] = {
 		["Projectiles Per Shot"] = 1,
-		["Damage"] = { min = 6, max = 6 },
+		["Damage"] = FRange( 6, 6 ),
 		["Force"] = 1,
-		["Air Damage Range"] = { min = 0, max = 0 },
+		["Air Damage Range"] = FRange( 0, 0 ),
 		["Spread"] = 0,
 		["Can Headshot"] = true,
 	},
@@ -69,14 +69,14 @@ SWEP.Stats = {
 		["Acceleration Time"] = 1000,
 		["Deceleration Time"] = 1000,
 		["Minimum Error"] = 0,
-		["Error Angle"] = { min = 0.5, max = 0.5 },
+		["Error Angle"] = FRange( 0.5, 0.5 ),
 	},
 	["Appearance"] = {
 		["Holdtype"] = "pistol",
 	},
 	["Zoom"] = {
 		["Magnification Levels"] = 2,
-		["Magnification Range"] = { min = 3, max = 9 },
+		["Magnification Range"] = FRange( 3, 9 ),
 		["Zoom Time"] = 0.2,
 	},
 	["Melee"] = {

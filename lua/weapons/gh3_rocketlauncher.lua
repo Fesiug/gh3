@@ -77,8 +77,8 @@ SWEP.Stats = {
 		["Rounds Reloaded"] = 2,
 	},
 	["Firing"] = {
-		["Rounds Per Second"] = { min = 30, max = 30 },
-		["Shots Per Fire"] = { min = 1, max = 1 },
+		["Rounds Per Second"] = FRange( 30, 30 ),
+		["Shots Per Fire"] = FRange( 1, 1 ),
 		["Fire Recovery Time"] = 0.8,
 		["Rounds Per Shot"] = 1,
 	},
@@ -93,14 +93,14 @@ SWEP.Stats = {
 		["Acceleration Time"] = 1000,
 		["Deceleration Time"] = 1000,
 		["Minimum Error"] = 0,
-		["Error Angle"] = { min = 0, max = 0 },
+		["Error Angle"] = FRange( 0, 0 ),
 	},
 	["Appearance"] = {
 		["Holdtype"] = "ar2",
 	},
 	["Zoom"] = {
 		["Magnification Levels"] = 1,
-		["Magnification Range"] = { min = 1.8, max = 1.8 },
+		["Magnification Range"] = FRange( 1.8, 1.8 ),
 		["Zoom Time"] = 0.2,
 	},
 	["Melee"] = {

@@ -5,9 +5,9 @@ SWEP.Category			= "Halo 3"
 SWEP.Spawnable			= true
 
 -- Stuff
-SWEP.PrintName			= "Plasma Rifle"
-SWEP.Name_The			= "the plasma rifle"
-SWEP.Name_A				= "a plasma rifle"
+SWEP.PrintName			= "Plasma Pistol"
+SWEP.Name_The			= "the plasma pistol"
+SWEP.Name_A				= "a plasma pistol"
 SWEP.Slot				= 1
 SWEP.SlotPos			= 0
 
@@ -42,7 +42,7 @@ SWEP.Animations = {
 	["throw_grenade"]	= { seq = "throw_grenade", delay_tg = (12/30) },
 }
 SWEP.Sound = {
-	Firing = "GH3.PR.Fire",
+	Firing = "GH3.PP.Fire",
 	Dryfire = "GH3.BR.Dryfire",
 	Ammo = "GH3.BR.Ammo",
 }
@@ -56,11 +56,11 @@ SWEP.Stats = {
 		["Rounds Reloaded"] = 32,
 	},
 	["Firing"] = {
-		["Rounds Per Second"] = FRange( 6, 9 ),
-		["Acceleration Time"] = 0.8*1.25,
-		["Deceleration Time"] = 0.6*1.666667,
-		["Shots Per Fire"] = FRange( 0, 0 ),
-		["Fire Recovery Time"] = 0,
+		["Rounds Per Second"] = FRange( 30, 30 ),
+		["Acceleration Time"] = 0,
+		["Deceleration Time"] = 0,
+		["Shots Per Fire"] = FRange( 1, 1 ),
+		["Fire Recovery Time"] = 0.05,
 		["Rounds Per Shot"] = 0,
 	},
 	["Projectiles"] = {
@@ -77,9 +77,9 @@ SWEP.Stats = {
 		["Error Angle"] = FRange( 0.5, 1.25 ),
 	},
 	["Heat"] = {
-		["Heat Generated Per Round"] = 0.15,
-		["Deceleration Time"] = 0.8525,
-		["Deceleration Overheated Time"] = 0.35,
+		["Heat Generated Per Round"] = 0.14,
+		["Deceleration Time"] = 0.6,
+		["Deceleration Overheated Time"] = 0.45,
 		["Recovery Threshold"] = 0.1,
 		["Overheated Threshold"] = 1,
 	},
@@ -97,12 +97,12 @@ SWEP.Stats = {
 if CLIENT then
 	SWEP.ReticleData = {
 		{
-			mat = Material("gh3/ui/reticles/plasma_rifle.png", "smooth"),
+			mat = Material("gh3/ui/reticles/magnum.png", "smooth"),
 			w = ScreenScale(58),
 			h = ScreenScale(58)
 		}
 	}
 	
-	SWEP.WepSelect = Material("gh3/ui/schematics/po2/pr.png", "mips smooth")
-	SWEP.VMOffset = Vector(0, 0.075*100, 0)
+	SWEP.WepSelect = Material("gh3/ui/schematics/po2/pp.png", "mips smooth")
+	SWEP.VMOffset = Vector(0, 0, 0)
 end

@@ -60,14 +60,14 @@ SWEP.Stats = {
 		["Rounds Reloaded"] = 1,
 	},
 	["Firing"] = {
-		["Rounds Per Second"] = { min = 30, max = 30 },
-		["Shots Per Fire"] = { min = 1, max = 1 },
+		["Rounds Per Second"] = FRange( 30, 30 ),
+		["Shots Per Fire"] = FRange( 1, 1 ),
 		["Fire Recovery Time"] = 1,
 		["Rounds Per Shot"] = 1,
 	},
 	["Projectiles"] = {
 		["Projectiles Per Shot"] = 15,
-		["Damage"] = { min = 3, max = 10 },
+		["Damage"] = FRange( 3, 10 ),
 		["Force"] = 2,
 		["Air Damage Range"] = { min = 2 / units.meters, max = 4 / units.meters }, -- the fuck are the units
 		["Spread"] = 7.5,
@@ -77,7 +77,7 @@ SWEP.Stats = {
 		["Acceleration Time"] = 1000,
 		["Deceleration Time"] = 4,
 		["Minimum Error"] = 0,
-		["Error Angle"] = { min = 0, max = 0 },
+		["Error Angle"] = FRange( 0, 0 ),
 	},
 	["Appearance"] = {
 		["Holdtype"] = "shotgun",

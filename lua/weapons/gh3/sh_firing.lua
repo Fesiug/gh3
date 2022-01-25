@@ -161,6 +161,10 @@ function SWEP:PrimaryAttack(commanded)
 		self:SetAccelHeat( math.Clamp(self:GetAccelHeat() + self.Stats["Heat"]["Heat Generated Per Round"], 0, 11) )
 	end
 
+	if self.Stats["Age"] and self.Stats["Age"]["Age Generated Per Round"] then
+		self:SetAge( math.Clamp(self:GetAge() + self.Stats["Age"]["Age Generated Per Round"], 0, 11) )
+	end
+
 	self:SendAnim( self:SelAnims().fire, 1 )
 	if game.SinglePlayer() then
 		self:CallOnClient("BopsetSPFix")

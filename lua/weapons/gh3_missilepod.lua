@@ -40,8 +40,8 @@ SWEP.Stats = {
 		["Rounds Reloaded"] = 0,
 	},
 	["Firing"] = {
-		["Rounds Per Second"] = { min = 30, max = 30 },
-		["Shots Per Fire"] = { min = 1, max = 1 },
+		["Rounds Per Second"] = FRange( 30, 30 ),
+		["Shots Per Fire"] = FRange( 1, 1 ),
 		["Fire Recovery Time"] = 0.45,
 		["Rounds Per Shot"] = 0,
 	},
@@ -56,7 +56,7 @@ SWEP.Stats = {
 		["Acceleration Time"] = 0,
 		["Deceleration Time"] = 0,
 		["Minimum Error"] = 0.15,
-		["Error Angle"] = { min = 0.4, max = 0.4 },
+		["Error Angle"] = FRange( 0.4, 0.4 ),
 	},
 	["Appearance"] = {
 		["Holdtype"] = "physgun",
