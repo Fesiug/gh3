@@ -84,7 +84,7 @@ SWEP.Stats = {
 		["Overheated Threshold"] = 1,
 	},
 	["Age"] = {
-		["Age Generated Per Round"] = 0.0025,
+		["Age Generated Per Round"] = 0.004,
 	},
 	["Appearance"] = {
 		["Holdtype"] = "rpg",

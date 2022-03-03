@@ -163,10 +163,21 @@ function SWEP:SetupDataTables()
 	self:NetworkVar("Bool", 3, "ReloadingState")
 end
 
+function SWEP:GetStat( ... )
+	local lookop = self.Stats
+	for _, v in ipairs( { ... } ) do
+		if lookop[v] then
+			lookop = lookop[v]
+		else
+			return false
+		end
+	end
+
+	return lookop
+end
+
+
 local c_ammo = CreateConVar("gh3_cheat_ammo", 0, 0, "0 for default, 1 for spare, 2 for bottomless")
-
-
-
 function SWEP:SetAmmo(v)
 	if c_ammo:GetInt() == 1 then return end
 	return self:SetAmmoo(v)

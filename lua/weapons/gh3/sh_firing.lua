@@ -74,14 +74,14 @@ function SWEP:PrimaryAttack(commanded)
 
 	local howmany = self.Stats["Projectiles"]["Projectiles Per Shot"]
 	for i=1, howmany do
-		local rnd = util.SharedRandom(CurTime()/239, 0, 360, 21212121*i)
-		local rnd2 = util.SharedRandom(CurTime()/2134, 0, 1, 123*i)
-		local deviat = ( Angle( math.cos(rnd), math.sin(rnd), 0) * ( math.max( self.Stats["Error"]["Minimum Error"] or 0, rnd2 * ( Lerp(self:GetAccelInaccuracy(), self.Stats["Error"]["Error Angle"].min, self.Stats["Error"]["Error Angle"].max ) + self.Stats["Projectiles"]["Spread"] ) ) ) )
+		local rnd, rnd2 = util.SharedRandom(CurTime()*44, 0, 360, 21*i), util.SharedRandom(CurTime()*22, 0, 1, 12*i)
+		local deviat = Angle( math.cos(rnd), math.sin(rnd), 0)
+		deviat = ( deviat * ( math.max( self.Stats["Error"]["Minimum Error"] or 0, rnd2 * ( self.Stats["Error"]["Error Angle"]:Lerp( self:GetAccelInaccuracy() ) + self.Stats["Projectiles"]["Spread"] ) ) ) )
 
 		if !self.Stats["Projectiles"]["Class"] then
 			self:FireBullets( {
 				Attacker = self:GetOwner(),
-				Damage = 0, -- We will be making physical bullets
+				Damage = 0,
 				Force = self.Stats["Projectiles"]["Force"] or 1,
 				Dir = (self:GetOwner():EyeAngles() + deviat):Forward(),
 				Spread = vector_origin,
@@ -93,12 +93,12 @@ function SWEP:PrimaryAttack(commanded)
 					-- Thank you Arctic, very cool
 					local ent = tr.Entity
 
-					dmg:SetDamage( self.Stats["Projectiles"]["Damage"].max )
+					dmg:SetDamage( self.Stats["Projectiles"]["Damage"]:GetMax() )
 					dmg:SetDamageType(DMG_BULLET)
 
 					if IsValid(ent) then
 						local d = dmg:GetDamage()
-						local min, max = self.Stats["Projectiles"]["Air Damage Range"].min, self.Stats["Projectiles"]["Air Damage Range"].max
+						local min, max = self.Stats["Projectiles"]["Air Damage Range"]:GetMin(), self.Stats["Projectiles"]["Air Damage Range"]:GetMax()
 						local range = atk:GetPos():Distance(ent:GetPos())
 						local XD = 0
 						if range < min then
@@ -107,7 +107,7 @@ function SWEP:PrimaryAttack(commanded)
 							XD = math.Clamp((range - min) / (max - min), 0, 1)
 						end
 
-						dmg:SetDamage( Lerp(XD, self.Stats["Projectiles"]["Damage"].max, self.Stats["Projectiles"]["Damage"].min) )
+						dmg:SetDamage( self.Stats["Projectiles"]["Damage"]:Lerp(1-XD) )
 					end
 
 					if ent:IsPlayer() then
@@ -153,7 +153,7 @@ function SWEP:PrimaryAttack(commanded)
 		end
 	end
 
-	self:SetFireDelay( CurTime() + ( 1 / Lerp( self:GetAccelFirerate(), self.Stats["Firing"]["Rounds Per Second"].min, self.Stats["Firing"]["Rounds Per Second"].max ) ) )
+	self:SetFireDelay( CurTime() + ( 1 / self.Stats["Firing"]["Rounds Per Second"]:Lerp( self:GetAccelFirerate() ) ) )
 	self:SetFireRecoveryDelay( CurTime() + self.Stats["Firing"]["Fire Recovery Time"] )
 	self:SetClip1(self:Clip1() - self.Stats["Firing"]["Rounds Per Shot"] )
 	self:SetBurstCount(self:GetBurstCount() + 1)
@@ -181,17 +181,11 @@ function SWEP:PrimaryAttack(commanded)
 			local trolly = self.Stats["Recoil"]["Change Per Shot"]
 			fun = funks[ self.Stats["Recoil"]["Function"] ]
 
-			-- 
-			--fuckly() fun( trolly["Acceleration Rate"], trolly["Deceleration Rate"], )
-
-			fuckly = Lerp( fun(self:GetAccelRecoil()), trolly.min, trolly.max )
+			fuckly = trolly:Lerp( fun(self:GetAccelRecoil()) )
 		end
 
 		p:SetEyeAngles( p:EyeAngles() + Angle( fuckly * (-1), 0, 0 ) )
 	end
-	--bapset = AngleRand()/180 * 0.33
-
-
 end
 
 function SWEP:BopsetSPFix()

@@ -28,4 +28,8 @@ function FRange:Percent( value )
     return math.TimeFraction(self.min, self.max, value)
 end
 
+function FRange:Lerp( value )
+    return Lerp(value, self.min, self.max)
+end
+
 setmetatable( FRange, { __call = FRange.new } )
