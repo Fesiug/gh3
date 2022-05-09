@@ -233,6 +233,8 @@ function SWEP:Deploy(aye)
 	if CLIENT and aye != "aye" then return false end
 	if SERVER then self:CallOnClient("Deploy", "aye") end
 
+	if !IsValid(self:GetOwner()) then return false end
+
 
 	self:SetFidgetAnimTime(math.huge)
 

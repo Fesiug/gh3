@@ -14,13 +14,18 @@ hook.Add("PlayerSilentDeath", "BEEP!_PlayerSilentDeath", function( p )
 end)
 
 hook.Add("DoPlayerDeath", "BEEP!_DoPlayerDeath", function( p )
-	p:ShouldDropWeapon(true)
+	if GetConVar("gh3g_dropallondeath"):GetBool() then
+		--p:ShouldDropWeapon(true)
+		-- do i need it uhh
+	end
 end)
 
 hook.Add("PlayerDeath", "BEEP!_PlayerDeath", function( p )
 	se(p)
-	for i, v in pairs(p:GetWeapons()) do
-		p:DropWeapon(v, Vector(1000, 0, -1))
+	if GetConVar("gh3g_dropallondeath"):GetBool() then
+		for i, v in pairs(p:GetWeapons()) do
+			p:DropWeapon(v, Vector(1000, 0, -1))
+		end
 	end
 end)
 
@@ -31,7 +36,10 @@ hook.Add("PlayerDeathThink", "BEEP!_PlayerDeathThink", function( pl )
 		if pl.DeathTime2 and (pl.DeathTime2+retime+0.1) <= CurTime() then
 			pl:Spawn()
 			pl.LastArmor = pl:Armor()
-			pl:SetDSP(0)
+			net.Start("BEEP!_SetDSP")
+				net.WriteUInt(0, 8)
+				net.WriteBool(true)
+			net.Send(pl)
 			return true
 		else
 			local wham = math.floor( ( ( pl.DeathTime2 or 0 ) - CurTime()) + (retime+1) )
@@ -50,7 +58,10 @@ hook.Add("PlayerDeathThink", "BEEP!_PlayerDeathThink", function( pl )
 				if pl.doob[wham] then
 					if wham == 1 then
 						pl:ScreenFade( SCREENFADE.OUT, Color( 0, 0, 0, 255 ), 1, 1 )
-						pl:SetDSP(30)
+						net.Start("BEEP!_SetDSP")
+							net.WriteUInt(32, 8)
+							net.WriteBool(true)
+					net.Send(pl)
 					end
 				end
 				pl.doob[wham] = false
@@ -67,9 +78,13 @@ end)
 
 if SERVER then
 	util.AddNetworkString("BEEP!")
+	util.AddNetworkString("BEEP!_SetDSP")
 else
 	net.Receive("BEEP!", function(len, pl)
-		EmitSound( net.ReadBool() and "GH3U.Respawn" or "GH3U.RespawnCountdown", vector_origin, -1 )
+		EmitSound( net.ReadBool() and "GH3U.Respawn" or "GH3U.RespawnCountdown", vector_origin, -1, CHAN_AUTO, 1, 75, 0, 100, 0 )
+	end)
+	net.Receive("BEEP!_SetDSP", function(len, pl)
+		LocalPlayer():SetDSP( net.ReadUInt(8), net.ReadBool() )
 	end)
 end
 
@@ -134,11 +149,12 @@ if SERVER then
 		"red",
 	}
 	hook.Add("PlayerSetModel", "GH3_Model", function(ply)
-		timer.Simple(0, function()
-			if !IsValid(ply) or !ply:IsBot() or !ply:Alive() then return end
-			ply:SetModel("models/halo1/spartan_" .. models[math.Round(math.random(1, #models))] .. ".mdl" )
-			return true
-		end)
+		if false then
+			timer.Simple(0, function()
+				if !IsValid(ply) or !ply:IsBot() or !ply:Alive() then return end
+				ply:SetModel("models/halo1/spartan_" .. models[math.Round(math.random(1, #models))] .. ".mdl" )
+			end)
+		end
 	end)
 
 	local function Think()
@@ -219,10 +235,10 @@ else
 end
 
 if CLIENT then
-	CreateConVar("gh3g_shielddown", 0, FCVAR_ARCHIVE)
-	CreateConVar("gh3g_deathcam", 0, FCVAR_ARCHIVE)
-	CreateConVar("gh3g_monitormode", 0, FCVAR_ARCHIVE)
-	CreateConVar("gh3g_hud", 0, FCVAR_ARCHIVE)
+	CreateConVar("gh3g_shielddown", 0, FCVAR_ARCHIVE + FCVAR_REPLICATED)
+	CreateConVar("gh3g_deathcam", 0, FCVAR_ARCHIVE + FCVAR_REPLICATED)
+	CreateConVar("gh3g_monitormode", 0, FCVAR_ARCHIVE + FCVAR_REPLICATED)
+	CreateConVar("gh3g_hud", 0, FCVAR_ARCHIVE + FCVAR_REPLICATED)
 	local nextpl = SysTime()
 	local lastso = nil
 	local lockout = SysTime()
@@ -343,6 +359,8 @@ if CLIENT then
 		end
 		
 	end )
+else
+	CreateConVar("gh3g_dropallondeath", 0, FCVAR_ARCHIVE + FCVAR_REPLICATED)
 end
 
 local SV_lastwep = nil
