@@ -178,7 +178,7 @@ function SWEP:GetStat( ... )
 end
 
 
-local c_ammo = CreateConVar("gh3_cheat_ammo", 0, 0, "0 for default, 1 for spare, 2 for bottomless")
+local c_ammo = CreateConVar("gh3w_cheat_ammo", 0, 0, "0 for default, 1 for spare, 2 for bottomless")
 function SWEP:SetAmmo(v)
 	if c_ammo:GetInt() == 1 then return end
 	return self:SetAmmoo(v)
@@ -191,7 +191,7 @@ end
 
 function SWEP:SelHands()
 	if !IsValid(self:GetOwner()) then return a_spartan end
-	local sele = string.lower(self:GetOwner():GetInfo("gh3_cl_hands")  or "spartan")
+	local sele = string.lower(self:GetOwner():GetInfo("gh3g_cl_hands")  or "spartan")
 	if sele == "dervish" then
 		return a_dervish
 	elseif sele == "elite" then

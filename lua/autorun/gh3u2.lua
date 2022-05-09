@@ -26,8 +26,8 @@ end)
 
 hook.Add("PlayerDeathThink", "BEEP!_PlayerDeathThink", function( pl )
 
-	if GetConVar("gh3_game_deathcam"):GetBool() then
-		local retime = GetConVar("gh3_game_deathcam"):GetFloat()
+	if GetConVar("gh3g_deathcam"):GetBool() then
+		local retime = GetConVar("gh3g_deathcam"):GetFloat()
 		if pl.DeathTime2 and (pl.DeathTime2+retime+0.1) <= CurTime() then
 			pl:Spawn()
 			pl.LastArmor = pl:Armor()
@@ -219,16 +219,16 @@ else
 end
 
 if CLIENT then
-	CreateConVar("gh3_game_shielddown", 0, FCVAR_ARCHIVE)
-	CreateConVar("gh3_game_deathcam", 0, FCVAR_ARCHIVE)
-	CreateConVar("gh3_game_monitormode", 0, FCVAR_ARCHIVE)
-	CreateConVar("gh3_game_hud", 0, FCVAR_ARCHIVE)
+	CreateConVar("gh3g_shielddown", 0, FCVAR_ARCHIVE)
+	CreateConVar("gh3g_deathcam", 0, FCVAR_ARCHIVE)
+	CreateConVar("gh3g_monitormode", 0, FCVAR_ARCHIVE)
+	CreateConVar("gh3g_hud", 0, FCVAR_ARCHIVE)
 	local nextpl = SysTime()
 	local lastso = nil
 	local lockout = SysTime()
 	hook.Add("Think", "GH3_ShieldDown", function()
 	
-		if GetConVar("gh3_game_shielddown"):GetBool() then
+		if GetConVar("gh3g_shielddown"):GetBool() then
 			local p = LocalPlayer()
 			local sooound = nil
 
@@ -271,7 +271,7 @@ if CLIENT then
 
 	hook.Add( "HUDShouldDraw", "GH3_HideHUD", function( name )
 	
-		if GetConVar("gh3_game_hud"):GetBool() then
+		if GetConVar("gh3g_hud"):GetBool() then
 			if hide[ name ] then return false end
 			if IsValid(LocalPlayer()) and LocalPlayer():GetMoveType() == MOVETYPE_NOCLIP and hide_mon[ name ] then return false end
 		end
@@ -280,7 +280,7 @@ if CLIENT then
 
 	hook.Add( "HUDPaint", "GH3_EditorReticle", function()
 	
-		if GetConVar("gh3_game_monitormode"):GetBool() and LocalPlayer():GetMoveType() == MOVETYPE_NOCLIP then
+		if GetConVar("gh3g_monitormode"):GetBool() and LocalPlayer():GetMoveType() == MOVETYPE_NOCLIP then
 			local x, y = ScrW()/2, ScrH()/2
 
 			if false then--if IsValid(tr.Entity) then
@@ -304,7 +304,7 @@ if CLIENT then
 	local deead = lasteyes
 	hook.Add( "CalcView", "GH3_DeadCam", function( ply, pos, angles, fov )
 	
-		if GetConVar("gh3_game_deathcam"):GetBool() then
+		if GetConVar("gh3g_deathcam"):GetBool() then
 			if !ply:Alive() then
 				local view = {
 					origin = pos,--pos - ( angles:Forward() * 100 ),
@@ -348,7 +348,7 @@ end
 local SV_lastwep = nil
 hook.Add( "PlayerNoClip", "Monitor", function( ply, desire )
 
-	if GetConVar("gh3_game_monitormode"):GetBool() then
+	if GetConVar("gh3g_monitormode"):GetBool() then
 		ply:ScreenFade( SCREENFADE.IN, Color( 0, 0, 0, 255 ), 0.5, 0.06 )
 		ply:DrawViewModel( !desire, 0 )
 		ply:DrawViewModel( !desire, 1 )

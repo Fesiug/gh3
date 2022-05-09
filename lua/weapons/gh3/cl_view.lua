@@ -9,12 +9,12 @@ function SWEP:AdjustMouseSensitivity(def)
 	end
 end
 
-CreateConVar("gh3_crosshair_lowered", "0.17", FCVAR_ARCHIVE, "Lower your crosshair and weapon, just like in Halo")
-CreateConVar("gh3_vm_offset", "0 0 0", FCVAR_ARCHIVE, "viewmodel offset xyz")
-CreateConVar("gh3_vm_bench", "0", FCVAR_ARCHIVE, "viewmodel bench")
-CreateConVar("gh3_from_angle", "0 0 0", FCVAR_ARCHIVE, "viewmodel angle pyr")
-CreateConVar("gh3_vm_fov", "0", FCVAR_ARCHIVE, "viewmodel fov")
-CreateConVar("gh3_cl_hands", "spartan", FCVAR_ARCHIVE + FCVAR_USERINFO, "you can use spartan, chief, odst, elite, or dervish")
+CreateConVar("gh3w_crosshair_lowered", "0.17", FCVAR_ARCHIVE, "Lower your crosshair and weapon, just like in Halo")
+CreateConVar("gh3w_vm_offset", "0 0 0", FCVAR_ARCHIVE, "viewmodel offset xyz")
+CreateConVar("gh3w_vm_bench", "0", FCVAR_ARCHIVE, "viewmodel bench")
+CreateConVar("gh3w_from_angle", "0 0 0", FCVAR_ARCHIVE, "viewmodel angle pyr")
+CreateConVar("gh3w_vm_fov", "0", FCVAR_ARCHIVE, "viewmodel fov")
+CreateConVar("gh3w_cl_hands", "spartan", FCVAR_ARCHIVE + FCVAR_USERINFO, "you can use spartan, chief, odst, elite, or dervish")
 
 local reesult = angle_zero
 gh3bench_lastpos = gh3bench_lastpos or Vector()
@@ -22,14 +22,14 @@ gh3bench_lastang = gh3bench_lastang or Angle()
 function SWEP:GetViewModelPosition(pos, ang)
 	local p = LocalPlayer()
 
-	if GetConVar("gh3_vm_bench"):GetBool() then return gh3bench_lastpos, gh3bench_lastang
+	if GetConVar("gh3w_vm_bench"):GetBool() then return gh3bench_lastpos, gh3bench_lastang
 	else gh3bench_lastpos:Set(pos) gh3bench_lastang:Set(ang) end
 
 	local offset = Vector(0, 0, 0)
 	local wantset = Vector(0, 0, 0)
 	if self.bopset then wantset = wantset + self.bopset end
 	wantset = wantset + (self.VMOffset or vector_origin)
-	local hm = string.Explode(" ", GetConVar("gh3_vm_offset"):GetString())
+	local hm = string.Explode(" ", GetConVar("gh3w_vm_offset"):GetString())
 	wantset = wantset + Vector(hm[1], hm[2], hm[3])
 	offset:Add(wantset.x * ang:Right())
 	offset:Add(wantset.y * ang:Forward())
@@ -42,7 +42,7 @@ function SWEP:GetViewModelPosition(pos, ang)
 	local xd = ( p:GetFOV() * (ScrH()/ScrW()) )
 	local oldang = ang
 	local wagtset = Angle( (reesult) * -0.5, 0, 0 )
-	hm = string.Explode(" ", GetConVar("gh3_from_angle"):GetString())
+	hm = string.Explode(" ", GetConVar("gh3w_from_angle"):GetString())
 	wagtset = wagtset + Angle(hm[1], hm[2], hm[3])
 	ang:RotateAroundAxis(oldang:Right(), wagtset.p)
 	ang:RotateAroundAxis(oldang:Up(), wagtset.y)
@@ -58,7 +58,7 @@ function SWEP:CalcView( p, pos, ang, fov )
 		pos = pos + self.bopset.z * ang:Up()
 	end
 
-	self.dopset = GetConVar("gh3_crosshair_lowered"):GetFloat() * math.pow(math.sin((p.currentdop or 1)*math.pi*0.5), 2)
+	self.dopset = GetConVar("gh3w_crosshair_lowered"):GetFloat() * math.pow(math.sin((p.currentdop or 1)*math.pi*0.5), 2)
 	p.currentdop = math.Approach(p.currentdop or 0, self:ShouldBeLowered() and 1 or 0, FrameTime()*3)
 	if IsValid(self:GetHolster_Entity()) and !self:GetHolster_Entity().GH3 then
 		if !self.fintime then self.fintime = 0 end
@@ -81,7 +81,7 @@ function SWEP:CalcView( p, pos, ang, fov )
 
 		self.ViewModelFOV = self.ViewModelFOV * Lerp(cool, 1, 1.25)
 	end
-	self.ViewModelFOV = self.ViewModelFOV + GetConVar("gh3_vm_fov"):GetFloat()
+	self.ViewModelFOV = self.ViewModelFOV + GetConVar("gh3w_vm_fov"):GetFloat()
 
 	local vmc = Angle()
 	if self:GetVM(1):GetAttachment(1) then vmc = self:GetVM(1):GetAttachment(1).Ang end

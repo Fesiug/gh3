@@ -36,7 +36,7 @@ hook.Add("HUDPaint", "GH3_HUD", function()
 
 	--if !IsValid(we) then return end
 	if p:GetMoveType() == MOVETYPE_NOCLIP then return end
-	if !GetConVar("gh3_game_hud"):GetBool() then return end
+	if !GetConVar("gh3g_hud"):GetBool() then return end
 
 	local s_w, s_h = 0, 0--ScrW()/2, ScrH()/2
 	local e_w, e_h = ScrW(), ScrH()--ScrW()/2, ScrH()/2
