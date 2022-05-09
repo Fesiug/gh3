@@ -50,7 +50,7 @@ SWEP.AutoSwitchTo = false
 SWEP.LastSound = nil
 SWEP.GH3_NoDSP = true
 
-SWEP.UseHands = false
+SWEP.UseHands = true
 SWEP.m_bPlayPickupSound	= false
 SWEP.m_WeaponDeploySpeed = 10
 SWEP.BobScale = 0
@@ -73,6 +73,7 @@ SWEP.Secondary.Ammo			= "none"
 function SWEP:Ammo1() return self:GetAmmo() end
 
 local a_spartan = Model("models/gh3/fp/arms spartan.mdl")
+local a_chief = Model("models/gh3/fp/arms chief.mdl")
 local a_odst = Model("models/gh3/fp/arms odst.mdl")
 local a_chands = Model("models/gh3/fp/arms chands.mdl")
 local a_elite = Model("models/gh3/fp/arms elite.mdl")
@@ -197,6 +198,8 @@ function SWEP:SelHands()
 		return a_elite
 	elseif sele == "odst" then
 		return a_odst
+	elseif sele == "chief" then
+		return a_chief
 	elseif sele == "chands" then
 		return a_chands
 	else
@@ -206,6 +209,7 @@ end
 
 local human = {
 	[a_spartan] = true,
+	[a_chief] = true,
 	[a_odst] = true,
 	[a_chands] = true,
 }
@@ -342,22 +346,23 @@ function SWEP:Think()
 	end
 
 	if self.Sound.FiringLoop then
+		local gaming = (game.SinglePlayer() and SERVER) or (!game.SinglePlayer() and true)
 
 		local hmnga = ( CurTime() - ( 1 / self.Stats["Firing"]["Rounds Per Second"].max ) )
-		if p:KeyReleased(IN_ATTACK) or self:GetFireDelay() < hmnga and !l_s_3 then
+		if gaming and p:KeyReleased(IN_ATTACK) or self:GetFireDelay() < hmnga and !l_s_3 then
 			l_s_3 = true
 			self:StopSound( self.Sound.FiringLoop )
 			self:EmitSound( self.Sound.FiringOut )
 		end
 
-		if self:GetFireDelay() <= CurTime() and p:KeyPressed(IN_ATTACK) and self:CanPrimaryAttack(true) then
+		if gaming and self:GetFireDelay() <= CurTime() and p:KeyPressed(IN_ATTACK) and self:CanPrimaryAttack(true) then
 			l_s_3 = false
 
 			self:EmitSound( self.Sound.FiringIn )
 			l_s_4 = CurTime() + self.Sound.FiringIn_T - 0.05
 		end
 
-		if self:GetFireDelay() >= ( hmnga + 0.01 ) and ( l_s_4 <= CurTime() + 0.01 ) then
+		if gaming and self:GetFireDelay() >= ( hmnga + 0.01 ) and ( l_s_4 <= CurTime() + 0.01 ) then
 			self:EmitSound( self.Sound.FiringLoop )
 			l_s_4 = CurTime() + self.Sound.FiringLoop_T - 0.05
 		end

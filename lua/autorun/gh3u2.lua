@@ -1,6 +1,4 @@
 
-local retime = 5
-
 local function se(p)
 	p.DeathTime2 = CurTime()
 	p.doob = {
@@ -29,6 +27,7 @@ end)
 hook.Add("PlayerDeathThink", "BEEP!_PlayerDeathThink", function( pl )
 
 	if GetConVar("gh3_game_deathcam"):GetBool() then
+		local retime = GetConVar("gh3_game_deathcam"):GetFloat()
 		if pl.DeathTime2 and (pl.DeathTime2+retime+0.1) <= CurTime() then
 			pl:Spawn()
 			pl.LastArmor = pl:Armor()
@@ -360,8 +359,8 @@ end )
 
 hook.Add("PlayerTick", "GH3_HolsterFix", function(ply)
 	if !game.SinglePlayer() then
-		if ( !ply:GetActiveWeapon() or !ply:GetActiveWeapon().GH3 ) then
-			if ply:GetViewModel(1):GetModel():Left(10) == "models/gh3" then
+		if !IsValid(ply:GetActiveWeapon()) or ( IsValid(ply:GetActiveWeapon()) and !ply:GetActiveWeapon().GH3 ) then
+			if IsValid(ply:GetViewModel(1)) and ply:GetViewModel(1):GetModel() and ply:GetViewModel(1):GetModel():Left(10) == "models/gh3" then
 				ply:DrawViewModel( false, 1 )
 			end
 		end

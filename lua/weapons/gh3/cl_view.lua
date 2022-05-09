@@ -11,13 +11,19 @@ end
 
 CreateConVar("gh3_crosshair_lowered", "0.17", FCVAR_ARCHIVE, "Lower your crosshair and weapon, just like in Halo")
 CreateConVar("gh3_vm_offset", "0 0 0", FCVAR_ARCHIVE, "viewmodel offset xyz")
-CreateConVar("gh3_vm_angle", "0 0 0", FCVAR_ARCHIVE, "viewmodel angle pyr")
+CreateConVar("gh3_vm_bench", "0", FCVAR_ARCHIVE, "viewmodel bench")
+CreateConVar("gh3_from_angle", "0 0 0", FCVAR_ARCHIVE, "viewmodel angle pyr")
 CreateConVar("gh3_vm_fov", "0", FCVAR_ARCHIVE, "viewmodel fov")
-CreateConVar("gh3_cl_hands", "spartan", FCVAR_ARCHIVE + FCVAR_USERINFO, "hands to use, \"spartan\", \"elite\", \"dervish\"")
+CreateConVar("gh3_cl_hands", "spartan", FCVAR_ARCHIVE + FCVAR_USERINFO, "you can use spartan, chief, odst, elite, or dervish")
 
 local reesult = angle_zero
+gh3bench_lastpos = gh3bench_lastpos or Vector()
+gh3bench_lastang = gh3bench_lastang or Angle()
 function SWEP:GetViewModelPosition(pos, ang)
 	local p = LocalPlayer()
+
+	if GetConVar("gh3_vm_bench"):GetBool() then return gh3bench_lastpos, gh3bench_lastang
+	else gh3bench_lastpos:Set(pos) gh3bench_lastang:Set(ang) end
 
 	local offset = Vector(0, 0, 0)
 	local wantset = Vector(0, 0, 0)
@@ -36,7 +42,7 @@ function SWEP:GetViewModelPosition(pos, ang)
 	local xd = ( p:GetFOV() * (ScrH()/ScrW()) )
 	local oldang = ang
 	local wagtset = Angle( (reesult) * -0.5, 0, 0 )
-	hm = string.Explode(" ", GetConVar("gh3_vm_angle"):GetString())
+	hm = string.Explode(" ", GetConVar("gh3_from_angle"):GetString())
 	wagtset = wagtset + Angle(hm[1], hm[2], hm[3])
 	ang:RotateAroundAxis(oldang:Right(), wagtset.p)
 	ang:RotateAroundAxis(oldang:Up(), wagtset.y)
@@ -181,12 +187,47 @@ local LHIKBonesR = {
 	"r_thumb_tip",
 }
 
---[[local LHIK2BonesL = {
-	"ValveBiped.Bip01_L_UpperArm",
-	"ValveBiped.Bip01_L_Forearm",
-	"ValveBiped.Bip01_L_Wrist",
-	"ValveBiped.Bip01_L_Ulna",
-	"ValveBiped.Bip01_L_Hand",
+--[[local LHIK2BonesR = {
+	"base",
+	"l_upperarm",
+	"l_forearm",
+	"l_hand",
+	"l_index_low",
+	"l_index_mid",
+	"l_index_tip",
+	"l_middle_low",
+	"l_middle_mid",
+	"l_middle_tip",
+	"l_pinky_low",
+	"l_pinky_mid",
+	"l_pinky_tip",
+	"l_ring_low",
+	"l_ring_mid",
+	"l_ring_tip",
+	"l_thumb_low",
+	"l_thumb_mid",
+	"l_thumb_tip",
+	"r_upperarm",
+	"r_forearm",
+	"r_hand",
+	"r_index_low",
+	"r_index_mid",
+	"r_index_tip",
+	"r_middle_low",
+	"r_middle_mid",
+	"r_middle_tip",
+	"r_pinky_low",
+	"r_pinky_mid",
+	"r_pinky_tip",
+	"r_ring_low",
+	"r_ring_mid",
+	"r_ring_tip",
+	"r_thumb_low",
+	"r_thumb_mid",
+	"r_thumb_tip"
+}]]
+
+local translat2_order = {
 	"ValveBiped.Bip01_L_Finger4",
 	"ValveBiped.Bip01_L_Finger41",
 	"ValveBiped.Bip01_L_Finger42",
@@ -201,15 +242,7 @@ local LHIKBonesR = {
 	"ValveBiped.Bip01_L_Finger12",
 	"ValveBiped.Bip01_L_Finger0",
 	"ValveBiped.Bip01_L_Finger01",
-	"ValveBiped.Bip01_L_Finger02"
-}
-
-local LHIK2BonesR = {
-	"ValveBiped.Bip01_R_UpperArm",
-	"ValveBiped.Bip01_R_Forearm",
-	"ValveBiped.Bip01_R_Wrist",
-	"ValveBiped.Bip01_R_Ulna",
-	"ValveBiped.Bip01_R_Hand",
+	"ValveBiped.Bip01_L_Finger02",
 	"ValveBiped.Bip01_R_Finger4",
 	"ValveBiped.Bip01_R_Finger41",
 	"ValveBiped.Bip01_R_Finger42",
@@ -224,69 +257,358 @@ local LHIK2BonesR = {
 	"ValveBiped.Bip01_R_Finger12",
 	"ValveBiped.Bip01_R_Finger0",
 	"ValveBiped.Bip01_R_Finger01",
-	"ValveBiped.Bip01_R_Finger02"
-}]]
+	"ValveBiped.Bip01_R_Finger02",
+	
+	"ValveBiped.Bip01_L_UpperArm",
+	"ValveBiped.Bip01_R_UpperArm",
+	"ValveBiped.Bip01_L_Forearm",
+	"ValveBiped.Bip01_R_Forearm",
+	"ValveBiped.Bip01_L_Hand",
+	"ValveBiped.Bip01_R_Hand",
+	"ValveBiped.Bip01_L_Wrist",
+	"ValveBiped.Bip01_R_Wrist",
+	"ValveBiped.Bip01_L_Ulna",
+	"ValveBiped.Bip01_R_Ulna",
+}
+
+local translat2 = {
+	["ValveBiped.Bip01_L_Forearm"] = {
+		Bone = "l_forearm",
+		Pos = Vector(0, 0, 0),
+		Ang = Angle(0, 0, 180+45),
+	},
+	["ValveBiped.Bip01_R_Forearm"] = {
+		Bone = "r_forearm",
+		Pos = Vector(),
+		Ang = Angle(0, 0, 0-45),
+	},
+	
+	-- wtf is proc
+	["ValveBiped.Bip01_L_Ulna"] = {
+		Bone = "l_forearm",
+		Pos = Vector(0, 0, 0),
+		Ang = Angle(0, 0, -45),
+	},
+	["ValveBiped.Bip01_R_Ulna"] = {
+		Bone = "r_forearm",
+		Pos = Vector(0, 0, 0),
+		Ang = Angle(0, 0, 45),
+	},
+	["ValveBiped.Bip01_L_Wrist"] = {
+		Bone = "l_hand",
+		Pos = Vector(0, 0, 0),
+		Ang = Angle(0, 0, -90),
+	},
+	["ValveBiped.Bip01_R_Wrist"] = {
+		Bone = "r_hand",
+		Pos = Vector(0, 0, 0),
+		Ang = Angle(0, 0, 0),
+	},
+
+	["ValveBiped.Bip01_L_UpperArm"] = {
+		Bone = "l_upperarm",
+		Pos = Vector(),
+		Ang = Angle(0, 0, 180),
+	},
+	["ValveBiped.Bip01_R_UpperArm"] = {
+		Bone = "r_upperarm",
+		Pos = Vector(),
+		Ang = Angle(),
+	},
+	["ValveBiped.Bip01_L_Hand"] = {
+		Bone = "l_hand",
+		Pos = Vector(0, 1, 0),
+		Ang = Angle(-10, 10, 10),
+	},
+	["ValveBiped.Bip01_R_Hand"] = {
+		Bone = "r_hand",
+		Pos = Vector(0, -1, 0),
+		Ang = Angle(-10, -10, 180-10),
+	},
+
+	-- L Fingers
+	["ValveBiped.Bip01_L_Finger0"] = {
+		Bone = "l_thumb_low",
+		Pos = Vector(0.5, 0.5, 0),
+		Ang = Angle(0, 0, -90), -- lfing
+	},
+	["ValveBiped.Bip01_L_Finger01"] = {
+		Bone = "l_thumb_mid",
+		Pos = Vector(0.5, 0.5, 0),
+		Ang = Angle(0, 0, -90), -- lfing
+	},
+	["ValveBiped.Bip01_L_Finger02"] = {
+		Bone = "l_thumb_tip",
+		Pos = Vector(0.5, 0.5, 0),
+		Ang = Angle(0, 0, -90), -- lfing
+	},
+
+	["ValveBiped.Bip01_L_Finger1"] = {
+		Bone = "l_index_low",
+		Pos = Vector(),
+		Ang = Angle(), -- lfing
+	},
+	["ValveBiped.Bip01_L_Finger11"] = {
+		Bone = "l_index_mid",
+		Pos = Vector(),
+		Ang = Angle(), -- lfing
+	},
+	["ValveBiped.Bip01_L_Finger12"] = {
+		Bone = "l_index_tip",
+		Pos = Vector(),
+		Ang = Angle(), -- lfing
+	},
+
+	["ValveBiped.Bip01_L_Finger2"] = {
+		Bone = "l_middle_low",
+		Pos = Vector(),
+		Ang = Angle(), -- lfing
+	},
+	["ValveBiped.Bip01_L_Finger21"] = {
+		Bone = "l_middle_mid",
+		Pos = Vector(),
+		Ang = Angle(), -- lfing
+	},
+	["ValveBiped.Bip01_L_Finger22"] = {
+		Bone = "l_middle_tip",
+		Pos = Vector(),
+		Ang = Angle(), -- lfing
+	},
+
+	["ValveBiped.Bip01_L_Finger3"] = {
+		Bone = "l_ring_low",
+		Pos = Vector(),
+		Ang = Angle(), -- lfing
+	},
+	["ValveBiped.Bip01_L_Finger31"] = {
+		Bone = "l_ring_mid",
+		Pos = Vector(),
+		Ang = Angle(), -- lfing
+	},
+	["ValveBiped.Bip01_L_Finger32"] = {
+		Bone = "l_ring_tip",
+		Pos = Vector(),
+		Ang = Angle(), -- lfing
+	},
+
+	["ValveBiped.Bip01_L_Finger4"] = {
+		Bone = "l_pinky_low",
+		Pos = Vector(),
+		Ang = Angle(), -- lfing
+	},
+	["ValveBiped.Bip01_L_Finger41"] = {
+		Bone = "l_pinky_mid",
+		Pos = Vector(),
+		Ang = Angle(), -- lfing
+	},
+	["ValveBiped.Bip01_L_Finger42"] = {
+		Bone = "l_pinky_tip",
+		Pos = Vector(),
+		Ang = Angle(), -- lfing
+	},
+
+	-- R Fingers
+	["ValveBiped.Bip01_R_Finger0"] = {
+		Bone = "r_thumb_low",
+		Pos = Vector(0.5, -0.5, 0),
+		Ang = Angle(0, 0, 270), -- rfing
+	},
+	["ValveBiped.Bip01_R_Finger01"] = {
+		Bone = "r_thumb_mid",
+		Pos = Vector(0.5, -0.5, 0),
+		Ang = Angle(0, 0, 270), -- rfing
+	},
+	["ValveBiped.Bip01_R_Finger02"] = {
+		Bone = "r_thumb_tip",
+		Pos = Vector(0.5, -0.5, 0),
+		Ang = Angle(0, 0, 270), -- rfing
+	},
+
+	["ValveBiped.Bip01_R_Finger1"] = {
+		Bone = "r_index_low",
+		Pos = Vector(),
+		Ang = Angle(0, 0, 180), -- rfing
+	},
+	["ValveBiped.Bip01_R_Finger11"] = {
+		Bone = "r_index_mid",
+		Pos = Vector(),
+		Ang = Angle(0, 0, 180), -- rfing
+	},
+	["ValveBiped.Bip01_R_Finger12"] = {
+		Bone = "r_index_tip",
+		Pos = Vector(),
+		Ang = Angle(0, 0, 180), -- rfing
+	},
+
+	["ValveBiped.Bip01_R_Finger2"] = {
+		Bone = "r_middle_low",
+		Pos = Vector(),
+		Ang = Angle(0, 0, 180), -- rfing
+	},
+	["ValveBiped.Bip01_R_Finger21"] = {
+		Bone = "r_middle_mid",
+		Pos = Vector(),
+		Ang = Angle(0, 0, 180), -- rfing
+	},
+	["ValveBiped.Bip01_R_Finger22"] = {
+		Bone = "r_middle_tip",
+		Pos = Vector(),
+		Ang = Angle(0, 0, 180), -- rfing
+	},
+
+	["ValveBiped.Bip01_R_Finger3"] = {
+		Bone = "r_ring_low",
+		Pos = Vector(),
+		Ang = Angle(0, 0, 180), -- rfing
+	},
+	["ValveBiped.Bip01_R_Finger31"] = {
+		Bone = "r_ring_mid",
+		Pos = Vector(),
+		Ang = Angle(0, 0, 180), -- rfing
+	},
+	["ValveBiped.Bip01_R_Finger32"] = {
+		Bone = "r_ring_tip",
+		Pos = Vector(),
+		Ang = Angle(0, 0, 180), -- rfing
+	},
+
+	["ValveBiped.Bip01_R_Finger4"] = {
+		Bone = "r_pinky_low",
+		Pos = Vector(),
+		Ang = Angle(0, 0, 180), -- rfing
+	},
+	["ValveBiped.Bip01_R_Finger41"] = {
+		Bone = "r_pinky_mid",
+		Pos = Vector(),
+		Ang = Angle(0, 0, 180), -- rfing
+	},
+	["ValveBiped.Bip01_R_Finger42"] = {
+		Bone = "r_pinky_tip",
+		Pos = Vector(),
+		Ang = Angle(0, 0, 180), -- rfing
+	},
+}
 
 function SWEP:DoLHIK()
-	local lhik_model = self:GetVM(1)
-	local vm = self:GetVM(0)
+	local mdl_from	=	self:GetVM(0) -- spartan
+	local mdl_tooo	=	self:GetVM(1) -- gun
+	local mdl_gmod	=	self:GetOwner():GetHands()
 
-	local delta = 1
 	for _, bone in pairs(LHIKBonesL) do
-		local vmbone = vm:LookupBone(bone)
-		local lhikbone = lhik_model:LookupBone(bone)
+		local mdl_f = mdl_from
+		local mdl_t = mdl_tooo
+		local bone_from = mdl_f:LookupBone(bone)
+		local bone_tooo = mdl_t:LookupBone(bone)
 
-		if !vmbone then continue end
-		if !lhikbone then continue end
+		if !bone_from then continue end
+		if !bone_tooo then continue end
 
-		vm:GetBonePosition(vmbone)
-		lhik_model:GetBonePosition(lhikbone)
+		mdl_f:GetBonePosition(bone_from)
+		mdl_t:GetBonePosition(bone_tooo)
 
-		local vmtransform = vm:GetBoneMatrix(vmbone)
-		local lhiktransform = lhik_model:GetBoneMatrix(lhikbone)
+		local fromtransform = mdl_f:GetBoneMatrix(bone_from)
+		local toootransform = mdl_t:GetBoneMatrix(bone_tooo)
 
-		if !vmtransform then continue end
-		if !lhiktransform then continue end
+		if !fromtransform then continue end
+		if !toootransform then continue end
 
-		local vm_pos = vmtransform:GetTranslation()
-		local vm_ang = vmtransform:GetAngles()
-		local lhik_pos = lhiktransform:GetTranslation()
-		local lhik_ang = lhiktransform:GetAngles()
+		local from_pos = fromtransform:GetTranslation()
+		local from_ang = fromtransform:GetAngles()
+		local tooo_pos = toootransform:GetTranslation()
+		local tooo_ang = toootransform:GetAngles()
 
 		local matrix = Matrix()
 
-		matrix:SetTranslation(LerpVector(delta, vm_pos, lhik_pos))
-		matrix:SetAngles(LerpAngle(delta, vm_ang, lhik_ang))
+		matrix:SetTranslation(tooo_pos)
+		matrix:SetAngles(tooo_ang)
 
-		vm:SetBoneMatrix(vmbone, matrix)
+		mdl_from:SetBoneMatrix(bone_from, matrix)
 	end
 	for _, bone in pairs(LHIKBonesR) do
-		local vmbone = vm:LookupBone(bone)
-		local lhikbone = lhik_model:LookupBone(bone)
+		local mdl_f = mdl_from
+		local mdl_t = mdl_tooo
+		local bone_from = mdl_f:LookupBone(bone)
+		local bone_tooo = mdl_t:LookupBone(bone)
 
-		if !vmbone then continue end
-		if !lhikbone then continue end
+		if !bone_from then continue end
+		if !bone_tooo then continue end
 
-		vm:GetBonePosition(vmbone)
-		lhik_model:GetBonePosition(lhikbone)
+		mdl_f:GetBonePosition(bone_from)
+		mdl_t:GetBonePosition(bone_tooo)
 
-		local vmtransform = vm:GetBoneMatrix(vmbone)
-		local lhiktransform = lhik_model:GetBoneMatrix(lhikbone)
+		local fromtransform = mdl_f:GetBoneMatrix(bone_from)
+		local toootransform = mdl_t:GetBoneMatrix(bone_tooo)
 
-		if !vmtransform then continue end
-		if !lhiktransform then continue end
+		if !fromtransform then continue end
+		if !toootransform then continue end
 
-		local vm_pos = vmtransform:GetTranslation()
-		local vm_ang = vmtransform:GetAngles()
-		local lhik_pos = lhiktransform:GetTranslation()
-		local lhik_ang = lhiktransform:GetAngles()
+		local from_pos = fromtransform:GetTranslation()
+		local from_ang = fromtransform:GetAngles()
+		local tooo_pos = toootransform:GetTranslation()
+		local tooo_ang = toootransform:GetAngles()
 
 		local matrix = Matrix()
 
-		matrix:SetTranslation(LerpVector(delta, vm_pos, lhik_pos))
-		matrix:SetAngles(LerpAngle(delta, vm_ang, lhik_ang))
+		matrix:SetTranslation				(tooo_pos)
+		matrix:SetAngles					(tooo_ang)
 
-		vm:SetBoneMatrix(vmbone, matrix)
+		mdl_from:SetBoneMatrix(bone_from, matrix)
+	end
+
+	if false then
+	for index, bone in ipairs(translat2_order) do
+		local originindex = bone
+		local newbone = translat2[bone]
+
+		local mdl_f = mdl_gmod
+		local mdl_t = mdl_tooo
+		local bone_from = mdl_f:LookupBone(originindex)
+		local bone_tooo = mdl_t:LookupBone(newbone.Bone)
+
+		if !bone_from then --[[ print("Chand to Gun, No From") ]] continue end
+		if !bone_tooo then --[[ print("Chand to Gun, No Tooo") ]] continue end
+
+		mdl_f:GetBonePosition(bone_from)
+		mdl_t:GetBonePosition(bone_tooo)
+
+		local fromtransform = mdl_f:GetBoneMatrix(bone_from)
+		local toootransform = mdl_t:GetBoneMatrix(bone_tooo)
+
+		if !fromtransform then --[[ print("Chand to Gun, No Transform From") ]] continue end
+		if !toootransform then --[[ print("Chand to Gun, No Transform Tooo") ]] continue end
+
+		local from_pos = fromtransform:GetTranslation()
+		local from_ang = fromtransform:GetAngles()
+		local tooo_pos = toootransform:GetTranslation()
+		local tooo_ang = toootransform:GetAngles()
+
+		local matrix = Matrix()
+
+		if originindex == "ValveBiped.Bip01_L_Wrist" then
+			local bone1 = mdl_f:LookupBone("ValveBiped.Bip01_L_Forearm")
+			local bone2 = mdl_f:LookupBone("ValveBiped.Bip01_L_Hand")
+			bone1 = mdl_f:GetBoneMatrix(bone1)
+			bone2 = mdl_f:GetBoneMatrix(bone2)
+
+			matrix:SetTranslation( LerpVector(1, bone1:GetTranslation(), bone2:GetTranslation() ) )
+			matrix:SetAngles( LerpAngle(1, bone1:GetAngles(), bone2:GetAngles() ) )
+		elseif originindex == "ValveBiped.Bip01_L_Ulna" then
+			local bone1 = mdl_f:LookupBone("ValveBiped.Bip01_L_Forearm")
+			local bone2 = mdl_f:LookupBone("ValveBiped.Bip01_L_Hand")
+			bone1 = mdl_f:GetBoneMatrix(bone1)
+			bone2 = mdl_f:GetBoneMatrix(bone2)
+
+			matrix:SetTranslation( LerpVector(0.5, bone1:GetTranslation(), bone2:GetTranslation() ) )
+			matrix:SetAngles( LerpAngle(0.5, bone1:GetAngles(), bone2:GetAngles() ) )
+		else
+			matrix:SetTranslation(tooo_pos)
+			matrix:SetAngles(tooo_ang)
+		end
+		matrix:Translate( newbone.Pos )
+		matrix:Rotate( newbone.Ang )
+
+		mdl_gmod:SetBoneMatrix(bone_from, matrix)
+	end
 	end
 end
 

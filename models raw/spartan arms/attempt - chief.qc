@@ -1,0 +1,102 @@
+
+$modelname "gh3/fp/arms chief.mdl"
+$scale 1
+$origin 0 0 0 -90
+
+$cdmaterials "gh3\hands\spartan"
+
+$bodygroup "gun"
+{
+	studio "arms_default - chief.smd"
+}
+
+$bodygroup "chands"
+{
+	studio "chands.smd"
+}
+
+$bonemerge "base"
+$bonemerge "l_upperarm"
+$bonemerge "l_forearm"
+$bonemerge "l_hand"
+$bonemerge "l_index_low"
+$bonemerge "l_index_mid"
+$bonemerge "l_index_tip"
+$bonemerge "l_middle_low"
+$bonemerge "l_middle_mid"
+$bonemerge "l_middle_tip"
+$bonemerge "l_pinky_low"
+$bonemerge "l_pinky_mid"
+$bonemerge "l_pinky_tip"
+$bonemerge "l_ring_low"
+$bonemerge "l_ring_mid"
+$bonemerge "l_ring_tip"
+$bonemerge "l_thumb_low"
+$bonemerge "l_thumb_mid"
+$bonemerge "l_thumb_tip"
+$bonemerge "a_lhand"
+$bonemerge "r_upperarm"
+$bonemerge "r_forearm"
+$bonemerge "r_hand"
+$bonemerge "r_index_low"
+$bonemerge "r_index_mid"
+$bonemerge "r_index_tip"
+$bonemerge "r_middle_low"
+$bonemerge "r_middle_mid"
+$bonemerge "r_middle_tip"
+$bonemerge "r_pinky_low"
+$bonemerge "r_pinky_mid"
+$bonemerge "r_pinky_tip"
+$bonemerge "r_ring_low"
+$bonemerge "r_ring_mid"
+$bonemerge "r_ring_tip"
+$bonemerge "r_thumb_low"
+$bonemerge "r_thumb_mid"
+$bonemerge "r_thumb_tip"
+$bonemerge "a_rhand"
+
+$bonemerge "ValveBiped.Bip01_L_Finger12"
+$bonemerge "ValveBiped.Bip01_L_Finger11"
+$bonemerge "ValveBiped.Bip01_L_Finger1"
+$bonemerge "ValveBiped.Bip01_L_Finger22"
+$bonemerge "ValveBiped.Bip01_L_Finger21"
+$bonemerge "ValveBiped.Bip01_L_Finger2"
+$bonemerge "ValveBiped.Bip01_L_Finger42"
+$bonemerge "ValveBiped.Bip01_L_Finger41"
+$bonemerge "ValveBiped.Bip01_L_Finger4"
+$bonemerge "ValveBiped.Bip01_L_Finger32"
+$bonemerge "ValveBiped.Bip01_L_Finger31"
+$bonemerge "ValveBiped.Bip01_L_Finger3"
+$bonemerge "ValveBiped.Bip01_L_Finger02"
+$bonemerge "ValveBiped.Bip01_L_Finger01"
+$bonemerge "ValveBiped.Bip01_L_Finger0"
+$bonemerge "ValveBiped.Bip01_L_Hand"
+$bonemerge "ValveBiped.Bip01_L_Forearm"
+$bonemerge "ValveBiped.Bip01_L_UpperArm"
+$bonemerge "ValveBiped.Bip01_R_Finger12"
+$bonemerge "ValveBiped.Bip01_R_Finger11"
+$bonemerge "ValveBiped.Bip01_R_Finger1"
+$bonemerge "ValveBiped.Bip01_R_Finger22"
+$bonemerge "ValveBiped.Bip01_R_Finger21"
+$bonemerge "ValveBiped.Bip01_R_Finger2"
+$bonemerge "ValveBiped.Bip01_R_Finger42"
+$bonemerge "ValveBiped.Bip01_R_Finger41"
+$bonemerge "ValveBiped.Bip01_R_Finger4"
+$bonemerge "ValveBiped.Bip01_R_Finger32"
+$bonemerge "ValveBiped.Bip01_R_Finger31"
+$bonemerge "ValveBiped.Bip01_R_Finger3"
+$bonemerge "ValveBiped.Bip01_R_Finger02"
+$bonemerge "ValveBiped.Bip01_R_Finger01"
+$bonemerge "ValveBiped.Bip01_R_Finger0"
+$bonemerge "ValveBiped.Bip01_R_Hand"
+$bonemerge "ValveBiped.Bip01_R_Forearm"
+$bonemerge "ValveBiped.Bip01_R_UpperArm"
+
+$sequence "idle" {
+	"arms_default.smd"
+	fps 30
+}
+$sequence "idle2" {
+	"chands.smd"
+	fps 30
+}

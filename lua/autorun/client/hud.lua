@@ -88,7 +88,7 @@ hook.Add("HUDPaint", "GH3_HUD", function()
 		bun = surface.GetTextSize( we:GetAmmo() ) / 2
 		surface.SetTextPos( x + ( w * (3/4) ) - bun, y + ss*3.5 )
 		surface.DrawText( we:GetAmmo() )
-	else
+	elseif false then
 		local x, y, w, h = s_w + border, s_h + border, ss*35, ss*22
 		for i=1, 4 do
 			surface.SetDrawColor( Color(0, 0, 0, 127) )
@@ -137,7 +137,7 @@ hook.Add("HUDPaint", "GH3_HUD", function()
 		surface.DrawText( math.Round(p:Health()/p:GetMaxHealth()*100) .. "%" )
 	end
 
-	do	-- Motion tracker
+	if false then	-- Motion tracker
 		local x, y, w, h = s_w + border, s_h + e_h - border - ss*90, ss*90, ss*90
 		local bun = 0
 
@@ -189,10 +189,10 @@ hook.Add("HUDPaint", "GH3_HUD", function()
 		surface.SetDrawColor( Color(167, 59, 59, 255) )
 		surface.DrawRect( x + ss*2, y + ss*2, w - ss*4, h/2 - ss*4 )
 		surface.SetDrawColor( Color(167*1.25, 59*1.25, 59*1.25, 255) )
-		surface.DrawRect( x + ss*2, y + ss*2, ss*2, h/2 - ss*4 )
+		surface.DrawRect( x + ss*2, y + ss*2, Lerp( p:Frags()/math.huge, ss*2, w - ss*4), h/2 - ss*4 )
 
 		surface.SetFont( "gh3_debug3" )
-		local stre = "0"
+		local stre = p:Frags()
 		bun = surface.GetTextSize( stre ) / 2
 		surface.SetTextPos( x + ss*5, y + ss*1.75 )
 		surface.DrawText( stre )
@@ -200,10 +200,10 @@ hook.Add("HUDPaint", "GH3_HUD", function()
 		surface.SetDrawColor( Color(61, 105, 167, 255) )
 		surface.DrawRect( x + ss*2, y + ss*2 + h/2, w - ss*4, h/2 - ss*4 )
 		surface.SetDrawColor( Color(61*1.25, 105*1.25, 167*1.25, 255) )
-		surface.DrawRect( x + ss*2, y + ss*2 + h/2, ss*2, h/2 - ss*4 )
+		surface.DrawRect( x + ss*2, y + ss*2 + h/2, Lerp( p:Deaths()/math.huge, ss*2, w - ss*4), h/2 - ss*4 )
 
 		surface.SetFont( "gh3_debug3" )
-		local stre = "0"
+		local stre = p:Deaths()
 		bun = surface.GetTextSize( stre ) / 2
 		surface.SetTextPos( x + ss*5, y + ss*1.75 + h/2 )
 		surface.DrawText( stre )
