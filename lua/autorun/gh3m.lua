@@ -27,8 +27,23 @@ local m_id = {
 	[16]	= "suicide",		-- killed by self
 	[17]	= "killjoy",		-- end someones killing spree
 	[18]	= "grave",			-- kill someone while you're dead
+	
+	[25]	= "ks_sg_5",		-- shotgun spree 5
+	[26]	= "ks_sg_10",		-- shotgun spree 10
+	
+	[27]	= "ks_sword_5",		-- sword spree 5
+	[28]	= "ks_sword_10",	-- sword spree 10
+	
+	--[29]	= "ks_sn_1",		-- sniper headshot
+	[30]	= "ks_sn_5",		-- sniper spree 5
+	[31]	= "ks_sn_10",		-- sniper spree 10
+	
+	[32]	= "ks_vehicle",		-- hit and run
+	[33]	= "ks_vehicle_5",	-- vehicle kill 5
+	[34]	= "ks_vehicle_10",	-- vehicle kill 10
+	[35]	= "ks_wheelman",	-- your passenger killed someone
 
-	[33]	= "extermination",	-- wipe out an enemy team with an overkill
+	[99]	= "extermination",	-- wipe out an enemy team with an overkill
 
 	[100]	= "melee",			-- melee kill 
 	[101]	= "melee_ninja",	-- melee kill ninja style
@@ -143,6 +158,50 @@ local m_stats = {
 		snd = "flavor/invincible[invincible]",
 	},
 
+	["ks_sg_5"]	= {
+		name = "Shotgun Spree!",
+		desc = "5 kills in a row with a shotgun.",
+		color = clr_lt,
+		snd = "flavor/shotgun_spree[shotgun_spree]",
+	},
+	["ks_sg_10"]	= {
+		name = "Open Season!",
+		desc = "10 kills in a row with a shotgun!",
+		color = clr_lt,
+		snd = "flavor/open_season[open_season]",
+	},
+
+	["ks_sword_5"]	= {
+		name = "Sword Spree!",
+		desc = "5 kills in a row with a sword.",
+		color = clr_lt,
+		snd = "flavor/sword_spree[sword_spree]",
+	},
+	["ks_sword_10"]	= {
+		name = "Slice 'N Dice!",
+		desc = "10 kills in a row with a sword!",
+		color = clr_lt,
+		snd = "flavor/slice_n_dice[slice_n_dice]",
+	},
+
+	["ks_vehicle"]	= {
+		name = "Splatter!",
+		desc = "Hit and kill an opponent with a vehicle.",
+		color = clr_ks,
+	},
+	["ks_vehicle_5"]	= {
+		name = "Splatter Spree!",
+		desc = "Splatter 5 opponents in a row without dying.",
+		color = clr_lt,
+		snd = "flavor/splatter_spree[splatter_spree]",
+	},
+	["ks_vehicle_10"]	= {
+		name = "Vehicular Manslaughter!",
+		desc = "Splatter 10 opponents in a row without dying!",
+		color = clr_lt,
+		snd = "flavor/vehicular_manslaughter[vehicular_manslaughter]",
+	},
+
 	["suicide"]			= { 
 		--name = "Suicide...",
 		snd = "general/suicide[suicide]",
@@ -198,8 +257,8 @@ if SERVER then
 
 	function AddKill(ply)
 		ply.DoubleKill = CurTime()
-		ply.DoubleCount = ( ply.DoubleCount and ply.DoubleCount + 1 ) or 1
-		ply.KillingSpree = ( ply.KillingSpree and ply.KillingSpree + 1 ) or 1
+		ply.DoubleCount = ( ply.DoubleCount or 0 ) + 1
+		ply.KillingSpree = ( ply.KillingSpree or 0 ) + 1
 		MedalUpdate(ply)
 	end
 	
@@ -233,19 +292,18 @@ if SERVER then
 	}
 
 	local sta_kilspre_shotgun = {
-		[5] 	= 99,
-		[10] 	= 99,
+		[5] 	= 25,
+		[10] 	= 26,
 	}
 
 	local sta_kilspre_sword = {
-		[5] 	= 99,
-		[10] 	= 99,
+		[5] 	= 27,
+		[10] 	= 28,
 	}
 
 	local sta_kilspre_vehicle = {
-		[5] 	= 99,
-		[10] 	= 99,
-		[15] 	= 99,
+		[5] 	= 33,
+		[10] 	= 34,
 	}
 
 	function CheckCools(ply)
@@ -255,8 +313,14 @@ if SERVER then
 		if sta_kilspre[ply.KillingSpree] then
 			MedalSend(ply, sta_kilspre[ply.KillingSpree])
 		end
-		if sta_kilspre[ply.KillingSpree_Shotgun] then
+		if sta_kilspre_shotgun[ply.KillingSpree_Shotgun] then
 			MedalSend(ply, sta_kilspre_shotgun[ply.KillingSpree_Shotgun])
+		end
+		if sta_kilspre_sword[ply.KillingSpree_Sword] then
+			MedalSend(ply, sta_kilspre_sword[ply.KillingSpree_Sword])
+		end
+		if sta_kilspre_vehicle[ply.KillingSpree_Vehicle] then
+			MedalSend(ply, sta_kilspre_vehicle[ply.KillingSpree_Vehicle])
 		end
 		
 		if player.GetCount() >= 2 then
@@ -265,13 +329,15 @@ if SERVER then
 				if v == ply then continue end
 				if v:Alive() then extermination = true end
 			end
-			if !extermination and !ply.ExterminationGot and ply.DoubleCount >= 4 then ply.ExterminationGot = false MedalSend(ply, 33) end
+			if !extermination and !ply.ExterminationGot and ply.DoubleCount >= 4 then ply.ExterminationGot = false MedalSend(ply, 99) end
 		end
 	end
 	
 	function MedalReset(ply)
 		ply.KillingSpree = 0
 		ply.KillingSpree_Shotgun = 0
+		ply.KillingSpree_Sword = 0
+		ply.KillingSpree_Vehicle = 0
 		ply.DoubleKill = -math.huge
 		ply.DoubleCount = 0
 		ply.ExterminationGot = false
@@ -291,12 +357,12 @@ if SERVER then
 	end
 
 	hook.Add("PlayerDeath", "GH3M_PlayerDeath", function( ply, inf, atk )
+		PrintTable(lastinfo)
 		if atk:IsPlayer() then
 			if atk == ply then
 				MedalSend(atk, 16) -- Fool
 			else
 				AddKill(atk)
-				CheckCools(atk)
 				if ply.KillingSpree and ply.KillingSpree >= 5 then
 					MedalSend(atk, 17)
 				end
@@ -314,6 +380,24 @@ if SERVER then
 							MedalSend(atk, 100)
 						end
 					end
+					atk.KillingSpree_Sword = ( atk.KillingSpree_Sword or 0 ) + 1
+				end
+				if check( lastinfo.dmgtype, DMG_BUCKSHOT ) then -- Shotgun sprees
+					atk.KillingSpree_Shotgun = ( atk.KillingSpree_Shotgun or 0 ) + 1
+				end
+				if (IsValid(lastinfo.inflictor) and lastinfo.inflictor:IsVehicle()) or check( lastinfo.dmgtype, DMG_VEHICLE ) then -- Splatter sprees
+					MedalSend(atk, 32)
+					atk.KillingSpree_Vehicle = ( atk.KillingSpree_Vehicle or 0 ) + 1
+				end
+				CheckCools(atk)
+			end
+		elseif atk:IsVehicle() then -- fuck you, whoever's responsible for this
+			if IsValid(atk:GetDriver()) then
+				local new = atk:GetDriver()
+				if check( lastinfo.dmgtype, DMG_VEHICLE ) then -- Splatter sprees
+					MedalSend(new, 32)
+					new.KillingSpree_Vehicle = ( new.KillingSpree_Vehicle or 0 ) + 1
+					CheckCools(new)
 				end
 			end
 		else
@@ -325,13 +409,13 @@ if SERVER then
 	hook.Add( "OnNPCKilled", "ExplosionEffectOnNPCDeath", function( npc, atk, inf )
 		if atk:IsPlayer() then
 			AddKill(atk)
-			CheckCools(atk)
 			if !atk:Alive() then
 				MedalSend(atk, 18)
 			end
 			if npc.KillingSpree and npc.KillingSpree >= 5 then
 				MedalSend(atk, 17)
 			end
+			CheckCools(atk)
 		else
 			AddKill(atk)
 		end
