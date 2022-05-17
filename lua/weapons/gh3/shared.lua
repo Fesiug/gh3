@@ -50,7 +50,7 @@ SWEP.AutoSwitchTo = false
 SWEP.LastSound = nil
 SWEP.GH3_NoDSP = true
 
-SWEP.UseHands = true
+SWEP.UseHands = false
 SWEP.m_bPlayPickupSound	= false
 SWEP.m_WeaponDeploySpeed = 10
 SWEP.BobScale = 0
@@ -191,7 +191,7 @@ end
 
 function SWEP:SelHands()
 	if !IsValid(self:GetOwner()) then return a_spartan end
-	local sele = string.lower(self:GetOwner():GetInfo("gh3g_cl_hands")  or "spartan")
+	local sele = string.lower(self:GetOwner():GetInfo("gh3w_cl_hands")  or "spartan")
 	if sele == "dervish" then
 		return a_dervish
 	elseif sele == "elite" then

@@ -75,9 +75,6 @@ hook.Add("StartCommand", "GH3_StartCommand", function( ply, cmd )
 	end
 end)
 
-				   -- { IN_ATTACK2, IN_ZOOM, IN_GRENADE1, IN_GRENADE2 }
-				   -- { false, false, false, false }
-local hmng			= { IN_ATTACK2, IN_ZOOM, IN_GRENADE1, IN_GRENADE1 }
 local hmne			= { false, false, true, false }
 
 local lastzoom = 0
@@ -86,31 +83,27 @@ hook.Add("Move", "GH3_Move", function( ply, mv )
 	if IsValid(wep) and wep.GH3 then
 		ply:SetCanZoom(false)
 		local iu = mv:KeyDown(IN_USE)
-
-		-- Melee
-		if mv:KeyDown(hmng[1]) then
+		
+		if iu then
+			if mv:KeyDown(IN_ATTACK) then
+				wep:ThrowGrenade()
+			elseif mv:KeyDown(IN_ATTACK2) then
+				wep:ThrowGrenade(true) -- Equipment
+			end
+		elseif mv:KeyDown(IN_ATTACK2) then
 			wep:Melee()
 		end
 
 		-- Zoom
-		if mv:KeyPressed(hmng[2]) then
+		if mv:KeyPressed(IN_ZOOM) then
 			lastzoom = CurTime()
 			wep:EnterZoom()
 		end
-		if mv:KeyReleased(hmng[2]) and lastzoom < CurTime() - 0.3 then
+		if mv:KeyReleased(IN_ZOOM) and lastzoom < CurTime() - 0.3 then
 			wep:ExitZoom()
 		end
 
-		-- Throw grenade
-		if mv:KeyDown(hmng[3]) and ( hmne[3] and iu or !hmne[3] and true ) then
-			wep:ThrowGrenade()
-		end
-
-		-- Throw equipment
-		if mv:KeyDown(hmng[4]) and ( hmne[4] and iu or !hmne[4] and true )then
-			wep:ThrowGrenade(true)
-		end
-
+		-- inspek
 		if mv:KeyPressed(IN_RELOAD) and mv:KeyDown(IN_WALK) then
 			wep:SetFidgetAnimTime(CurTime())
 		end

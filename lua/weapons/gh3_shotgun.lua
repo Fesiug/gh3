@@ -69,7 +69,7 @@ SWEP.Stats = {
 		["Projectiles Per Shot"] = 15,
 		["Damage"] = FRange( 3, 10 ),
 		["Force"] = 2,
-		["Air Damage Range"] = { min = 2 / GH3.U_Meters, max = 4 / GH3.U_Meters }, -- the fuck are the units
+		["Air Damage Range"] = FRange( 2 / GH3.U_Meters, 4 / GH3.U_Meters ), -- the fuck are the units
 		["Spread"] = 7.5,
 		["Can Headshot"] = true,
 	},

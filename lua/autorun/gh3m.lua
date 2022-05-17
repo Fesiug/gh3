@@ -29,10 +29,14 @@ local m_id = {
 	[18]	= "grave",			-- kill someone while you're dead
 
 	[33]	= "extermination",	-- wipe out an enemy team with an overkill
+
+	[100]	= "melee",			-- melee kill 
+	[101]	= "melee_ninja",	-- melee kill ninja style
 }
 
 local clr_ks = Color(244, 189, 5)
 local clr_lt = Color(192, 191, 230)
+local clr_gr = Color(230, 230, 230)
 local clr_mi = Color(255, 160, 68)
 
 local m_stats = {
@@ -91,10 +95,15 @@ local m_stats = {
 		snd = "flavor/killionaire[killionaire]",
 	},
 
-	["perfection"]		= {
-		name = "Perfection!",
-		desc = "Win with over 15 kills without dying.",
-		snd = "misc/perfection[perfection]",
+	["melee"]		= {
+		name = "Beat Down!",
+		desc = "Hit and kill an opponent with a melee attack.",
+		color = clr_mi,
+	},
+	["melee_ninja"]		= {
+		name = "Assassin!",
+		desc = "Hit and kill an opponent with a melee attack from behind.",
+		color = clr_mi,
 	},
 
 	["killingspree"]	= {
@@ -147,15 +156,24 @@ local m_stats = {
 	["grave"]			= {
 		name = "Death from the Grave!",
 		color = clr_mi,
+		desc = "Kill an opponent after you have died."
 	},
 	["extermination"]	= {
 		name = "Extermination!",
-		color = clr_mi,
+		color = clr_gr,
 		snd = "flavor/extermination[extermination]",
+		desc = "Wipe out an enemy team with at least an Overkill.",
+	},
+	["perfection"]		= {
+		name = "Perfection!",
+		desc = "Win with over 15 kills without dying.",
+		color = clr_gr,
+		snd = "misc/perfection[perfection]",
 	},
 }
 
-
+CreateConVar("gh3m_killstreaktime", "4", FCVAR_ARCHIVE + FCVAR_REPLICATED)
+CreateConVar("gh3m_enabled", "0", FCVAR_ARCHIVE + FCVAR_REPLICATED)
 
 if SERVER then
 	util.AddNetworkString("GH3M_SendMedal")
@@ -173,7 +191,7 @@ if SERVER then
 			net.Start("GH3M_GetDoubleKill")
 				net.WriteFloat(ply.DoubleKill)
 				net.WriteUInt(ply.DoubleCount, 8)
-				net.WriteUInt(ply.KillingSpree, 16)
+				-- unused net.WriteUInt(ply.KillingSpree, 16)
 			net.Send(ply)
 		end
 	end
@@ -184,6 +202,13 @@ if SERVER then
 		ply.KillingSpree = ( ply.KillingSpree and ply.KillingSpree + 1 ) or 1
 		MedalUpdate(ply)
 	end
+	
+	local lastinfo = {
+		dmg			=	false,
+		dmgtype		=	false,
+		inflictor	=	false,
+		attacker	=	false,
+	}
 
 	local sta_dblkils = {
 		[2] 	= 0,
@@ -207,12 +232,31 @@ if SERVER then
 		[30]	= 15,
 	}
 
+	local sta_kilspre_shotgun = {
+		[5] 	= 99,
+		[10] 	= 99,
+	}
+
+	local sta_kilspre_sword = {
+		[5] 	= 99,
+		[10] 	= 99,
+	}
+
+	local sta_kilspre_vehicle = {
+		[5] 	= 99,
+		[10] 	= 99,
+		[15] 	= 99,
+	}
+
 	function CheckCools(ply)
 		if sta_dblkils[ply.DoubleCount] then
 			MedalSend(ply, sta_dblkils[ply.DoubleCount])
 		end
 		if sta_kilspre[ply.KillingSpree] then
 			MedalSend(ply, sta_kilspre[ply.KillingSpree])
+		end
+		if sta_kilspre[ply.KillingSpree_Shotgun] then
+			MedalSend(ply, sta_kilspre_shotgun[ply.KillingSpree_Shotgun])
 		end
 		
 		if player.GetCount() >= 2 then
@@ -227,6 +271,7 @@ if SERVER then
 	
 	function MedalReset(ply)
 		ply.KillingSpree = 0
+		ply.KillingSpree_Shotgun = 0
 		ply.DoubleKill = -math.huge
 		ply.DoubleCount = 0
 		ply.ExterminationGot = false
@@ -236,11 +281,19 @@ if SERVER then
 	hook.Add("PlayerSpawn", "GH3M_PlayerSpawn", function(ply)
 		MedalReset(ply)
 	end)
+	
+	local function check( f1, f2 )
+		return bit.band( f1, f2 ) == f2
+	end
+	
+	local function kst()
+		return GetConVar("gh3m_killstreaktime") and GetConVar("gh3m_killstreaktime"):GetFloat() or 4
+	end
 
 	hook.Add("PlayerDeath", "GH3M_PlayerDeath", function( ply, inf, atk )
 		if atk:IsPlayer() then
 			if atk == ply then
-				MedalSend(atk, 16)
+				MedalSend(atk, 16) -- Fool
 			else
 				AddKill(atk)
 				CheckCools(atk)
@@ -249,6 +302,18 @@ if SERVER then
 				end
 				if !atk:Alive() then
 					MedalSend(atk, 18)
+				end
+				if check( lastinfo.dmgtype, DMG_CLUB ) then -- Melee kills
+					if IsValid(lastinfo.target) then
+						local tary = lastinfo.target:EyeAngles().y
+						local atky = lastinfo.attacker:EyeAngles().y
+						local diff = math.abs(tary-atky) < 90
+						if diff then
+							MedalSend(atk, 101)
+						else
+							MedalSend(atk, 100)
+						end
+					end
 				end
 			end
 		else
@@ -274,19 +339,46 @@ if SERVER then
 
 	hook.Add("Think", "GH3M_Think", function()
 		for i, ply in ipairs(player.GetAll()) do
-
-			if ply.DoubleKill and ply.DoubleKill + 4 < CurTime() then
+			if ply.DoubleKill and ply.DoubleKill + kst() < CurTime() then
 				ply.DoubleCount = 0
 			end
 		end
+		
+		if false and lastinfo then
+			print(" \n")
+			print("dmg: "			.. "\t\t\t",		lastinfo.dmg)
+			print("dmgtype: "		.. "\t\t\t",		lastinfo.dmgtype)
+			print("attacker: "		.. "\t\t\t",		lastinfo.attacker)
+			print("inflictor: "		.. "\t\t\t",		lastinfo.inflictor)
+			print("target: "		.. "\t\t\t",		lastinfo.target)
+		end
 	end)
+
+	hook.Remove( "PostEntityTakeDamage", "GH3M_PostEntityTakeDamage")
+	hook.Add( "EntityTakeDamage", "GH3M_EntityTakeDamage", function( target, dmginfo, took )
+		if dmginfo then
+			-- it isn't preserved
+			lastinfo.dmg		=	dmginfo:GetDamage()
+			lastinfo.dmgtype	=	dmginfo:GetDamageType()
+			lastinfo.attacker	=	dmginfo:GetAttacker()
+			lastinfo.inflictor	=	dmginfo:GetInflictor()
+			lastinfo.target		=	target
+			--print(target:Health())
+		end
+		
+	end )
 else
 	local queue = {}
 	local lockout = 0
+	
+	local function kst()
+		return GetConVar("gh3m_killstreaktime") and GetConVar("gh3m_killstreaktime"):GetFloat() or 4
+	end
+
 	net.Receive("GH3M_GetDoubleKill", function()
 		LocalPlayer().DoubleKill = net.ReadFloat()
 		LocalPlayer().DoubleCount = net.ReadUInt(8)
-		LocalPlayer().KillingSpree = net.ReadUInt(16)
+		-- unused LocalPlayer().KillingSpree = net.ReadUInt(16)
 	end)
 	net.Receive("GH3M_SendMedal", function()
 		local uint = net.ReadUInt(8)
@@ -313,9 +405,9 @@ else
 		end
 	end)
 	hook.Add("HUDPaint", "GH3M_Medals", function()
-		if (LocalPlayer().DoubleKill + 4) > CurTime() then
+		if ( (LocalPlayer().DoubleKill or 0 ) + kst()) > CurTime() then
 			local cs = Color(63, 63, 63, 127)
-			local text = math.Round( 10 * (4 - (CurTime() - (LocalPlayer().DoubleKill or 0)) ))
+			local text = math.Round( 10 * (kst() - (CurTime() - (LocalPlayer().DoubleKill or 0)) ))
 			text = tostring(text)
 			if #text == 1 then
 				text = "0" .. text
